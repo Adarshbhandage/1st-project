@@ -72,17 +72,6 @@ body {
   margin-bottom: 24px;
 }
 
-.inner-box {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--r-lg);
-  padding: 24px;
-  transition: border-color 0.25s, transform 0.2s;
-}
-.inner-box:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
 /* NAV */
 .nav {
   position: sticky; top: 0; z-index: 200;
@@ -139,14 +128,16 @@ body {
 }
 .week-strip::-webkit-scrollbar { display: none; }
 .week-day {
-  min-width: 54px; height: 76px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 52px; height: 74px;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top: var(--glass-border-t);
   border-radius: var(--r-md);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
   cursor: pointer; flex-shrink: 0; transition: border-color 0.2s, background 0.2s;
 }
-.week-day:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.08); }
+.week-day:hover { border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
 .week-day.today {
   background: var(--lime-muted); border-color: var(--lime);
 }
@@ -169,10 +160,17 @@ body {
 
 /* MEAL CARD */
 .meal-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top: var(--glass-border-t);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--r-lg);
+  padding: 20px; display: flex; flex-direction: column;
+  transition: border-color 0.25s, transform 0.2s;
   min-height: 280px;
-  display: flex; flex-direction: column;
 }
-.meal-card:hover { border-color: var(--lime-border); transform: translateY(-3px); }
+.meal-card:hover { border-color: var(--lime-border); }
 .meal-emoji { font-size: 1.8rem; margin-bottom: 10px; }
 .meal-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
 .meal-time { font-size: 0.78rem; color: var(--white-70); margin-bottom: 12px; line-height: 1.4; }
@@ -204,9 +202,14 @@ body {
 .cutoff-tag .material-icons { font-size: 0.75rem; }
 
 /* BOTTOM ROW */
-.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .b-card {
-  display: flex; flex-direction: column;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-top: var(--glass-border-t);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--r-lg); padding: 24px;
 }
 .b-card-title {
   font-family: var(--font-display); font-size: 0.95rem; font-weight: 700;
@@ -288,21 +291,19 @@ body {
 </header>
 
 <div class="main">
-  <div class="glass-panel main-panel">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
-      <div>
-        <div class="date-tag" id="dateTag"></div>
-        <div class="greeting">Good morning, Adarsh 👋 — What's your plan for today?</div>
-      </div>
-      <!-- WEEK STRIP -->
-      <div class="week-strip" id="weekStrip" style="margin-bottom: 0;"></div>
-    </div>
+  <div class="glass-panel">
+    <div class="date-tag" id="dateTag"></div>
+    <div class="greeting">Good morning, Adarsh 👋 — What's your plan for today?</div>
 
-    <!-- MEALS -->
-    <div class="meals-heading">Today's Meals</div>
+    <!-- WEEK STRIP -->
+    <div class="week-strip" id="weekStrip" style="margin-bottom: 0;"></div>
+  </div>
+
+  <!-- MEALS -->
+  <div class="meals-heading">Today's Meals</div>
   <div class="meals-grid">
 
-    <div class="meal-card inner-box" id="card-b">
+    <div class="meal-card" id="card-b">
       <div class="meal-emoji">🍳</div>
       <div class="meal-name">Breakfast</div>
       <div class="meal-time">7:30 AM — Scrambled Eggs &amp; Toast</div>
@@ -315,7 +316,7 @@ body {
       <div class="cutoff-tag"><span class="material-icons">schedule</span>Mark by 9:00 PM tonight · Finalizing soon</div>
     </div>
 
-    <div class="meal-card inner-box" id="card-l">
+    <div class="meal-card" id="card-l">
       <div class="meal-emoji">🍲</div>
       <div class="meal-name">Lunch</div>
       <div class="meal-time">1:00 PM — Vegetable Biryani</div>
@@ -328,7 +329,7 @@ body {
       <div class="cutoff-tag"><span class="material-icons">schedule</span>Mark by 9:00 PM tonight · Finalizing soon</div>
     </div>
 
-    <div class="meal-card inner-box" id="card-d">
+    <div class="meal-card" id="card-d">
       <div class="meal-emoji">🥗</div>
       <div class="meal-name">Dinner</div>
       <div class="meal-time">8:00 PM — Grilled Chicken &amp; Salad</div>
@@ -345,18 +346,18 @@ body {
 
   <!-- BOTTOM CARDS -->
   <div class="bottom-grid">
-    <div class="b-card inner-box">
+    <div class="b-card">
       <div class="b-card-title"><span class="material-icons">local_fire_department</span> My Streak</div>
       <div class="streak-num">12</div>
       <div class="streak-days">Days</div>
       <div class="impact-pill"><span class="material-icons">eco</span> Your meal data is helping reduce waste on campus.</div>
-      <div style="margin-top:auto; padding-top: 20px;">
+      <div style="margin-top:16px">
         <div class="prog-track"><div class="prog-fill" id="sfBar"></div></div>
         <div class="prog-hint">3 more days to reach Platinum level</div>
       </div>
     </div>
 
-    <div class="b-card inner-box">
+    <div class="b-card">
       <div class="b-card-title"><span class="material-icons">restaurant</span> Chef's Update</div>
       <img class="chef-photo"
         src="chef_3d_icon.png" style="filter:none; object-fit:contain; object-position:bottom;"
@@ -365,8 +366,7 @@ body {
       <div class="chef-quote">"Thanks for the head's up, Adarsh! Knowing who's skipping helps us prep the right amount. Every mark makes a difference."</div>
     </div>
   </div>
-  </div> <!-- END .glass-panel main-panel -->
-</div> <!-- END .main -->
+</div>
 
 <!-- TAB BAR -->
 <nav class="tab-bar">
@@ -378,44 +378,12 @@ body {
   </div>
 </nav>
 
-<script type="application/ignored">
-// ── Config ─────────────────────────────────────────────────────────
-const API_BASE = 'http://localhost:5000/api';
-const token    = localStorage.getItem('sf_token');
-const user     = (() => { try { return JSON.parse(localStorage.getItem('sf_user')); } catch { return null; } })();
-
-// Auth guard — redirect if not logged in
-if (!token || !user) { window.location.href = 'index.html'; }
-
-// Set greeting with real name
-if (user) {
-  const greet = document.querySelector('.greeting');
-  if (greet) {
-    const hour = new Date().getHours();
-    const tod = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
-    greet.textContent = `Good ${tod}, ${user.name || 'there'} 👋 — What's your plan for today?`;
-  }
-  // Add logout to nav
-  const navCta = document.querySelector('.nav-cta');
-  if (navCta) {
-    navCta.textContent = 'Log Out';
-    navCta.href = '#';
-    navCta.onclick = (e) => {
-      e.preventDefault();
-      localStorage.removeItem('sf_token');
-      localStorage.removeItem('sf_user');
-      window.location.href = 'index.html';
-    };
-  }
-}
-
-// ── Date tag ─────────────────────────────────────────────────────────
+<script>
+// Date
 const now = new Date();
-document.getElementById('dateTag').textContent = now.toLocaleDateString('en-IN',{
-  weekday:'long',day:'numeric',month:'long',year:'numeric'
-}).toUpperCase();
+document.getElementById('dateTag').textContent = now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
 
-// ── Week strip ────────────────────────────────────────────────────────
+// Week strip
 const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const strip=document.getElementById('weekStrip');
 for(let i=-3;i<=3;i++){
@@ -426,117 +394,21 @@ for(let i=-3;i<=3;i++){
   strip.appendChild(el);
 }
 
-// ── Load today's menu from backend ───────────────────────────────────
-async function loadTodayMenu() {
-  try {
-    const res = await fetch(`${API_BASE}/menu/today`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const data = await res.json();
-    if (!data.success || !data.data) return;
-
-    const menu = data.data;
-    const fmt = (items) => Array.isArray(items) && items.length ? items.join(', ') : null;
-
-    if (fmt(menu.breakfast)) {
-      document.querySelector('#card-b .meal-time').textContent = '7:30 AM — ' + fmt(menu.breakfast);
-    }
-    if (fmt(menu.lunch)) {
-      document.querySelector('#card-l .meal-time').textContent = '1:00 PM — ' + fmt(menu.lunch);
-    }
-    if (fmt(menu.dinner)) {
-      document.querySelector('#card-d .meal-time').textContent = '8:00 PM — ' + fmt(menu.dinner);
-    }
-  } catch(e) {
-    // Keep default placeholders if no menu set
-  }
-}
-loadTodayMenu();
-
-// ── Load my existing selection for today ────────────────────────────
-async function loadMyMeals() {
-  try {
-    const res = await fetch(`${API_BASE}/meals/my-meals`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    const data = await res.json();
-    if (!data.success || !data.data || !data.data.length) return;
-
-    // Find today's record
-    const today = now.toISOString().split('T')[0];
-    const todayMeal = data.data.find(m => m.date === today);
-    if (!todayMeal) return;
-
-    // Pre-fill selections
-    if (todayMeal.breakfast !== null && todayMeal.breakfast !== undefined) {
-      pick('b', todayMeal.breakfast ? 'yes' : 'no', false);
-    }
-    if (todayMeal.lunch !== null && todayMeal.lunch !== undefined) {
-      pick('l', todayMeal.lunch ? 'yes' : 'no', false);
-    }
-    if (todayMeal.dinner !== null && todayMeal.dinner !== undefined) {
-      pick('d', todayMeal.dinner ? 'yes' : 'no', false);
-    }
-  } catch(e) {}
-}
-loadMyMeals();
-
-// ── Meal selection state ───────────────────────────────────────────
-const mealState = { b: null, l: null, d: null };
-let saveTimeout = null;
-
-async function pick(id, choice, save=true) {
-  mealState[id] = choice;
-  const card = document.getElementById('card-' + id);
-  const yes  = card.querySelectorAll('.mbtn')[0];
-  const no   = card.querySelectorAll('.mbtn')[1];
-  yes.classList.toggle('chosen', choice === 'yes');
-  no.classList.toggle('chosen',  choice === 'no');
-  if (choice === 'yes') {
-    no.textContent = 'Skipping this one';
-    no.classList.remove('chosen');
-  }
-  if (choice === 'no') {
-    yes.innerHTML = '<span class="material-icons">check_circle</span> I\'ll be there';
-    yes.classList.remove('chosen');
-  }
-
-  if (save) {
-    // Debounce: save 1 second after the last change
-    clearTimeout(saveTimeout);
-    saveTimeout = setTimeout(saveMeals, 1000);
-  }
+// Meal toggle
+const state={b:null,l:null,d:null};
+function pick(id,choice){
+  state[id]=choice;
+  const card=document.getElementById('card-'+id);
+  const yes=card.querySelectorAll('.mbtn')[0];
+  const no=card.querySelectorAll('.mbtn')[1];
+  yes.classList.toggle('chosen',choice==='yes');
+  no.classList.toggle('chosen',choice==='no');
+  if(choice==='yes'){no.textContent='Skipping this one'; no.classList.remove('chosen');}
+  if(choice==='no'){yes.innerHTML='<span class="material-icons">check_circle</span> I\'ll be there'; yes.classList.remove('chosen');}
 }
 
-async function saveMeals() {
-  const payload = {
-    breakfast: mealState.b === 'yes' ? true : mealState.b === 'no' ? false : null,
-    lunch:     mealState.l === 'yes' ? true : mealState.l === 'no' ? false : null,
-    dinner:    mealState.d === 'yes' ? true : mealState.d === 'no' ? false : null,
-  };
-  // Only send if at least one choice is made
-  if (payload.breakfast === null && payload.lunch === null && payload.dinner === null) return;
-
-  try {
-    await fetch(`${API_BASE}/meals/select-meal`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
-    });
-    // Silently saved — no alert needed
-  } catch(e) {
-    // Silent fail is okay for attendance
-  }
-}
-
-// ── Streak bar animation ────────────────────────────────────────────
-setTimeout(() => { document.getElementById('sfBar').style.width = '80%'; }, 400);
+// Streak bar
+setTimeout(()=>{ document.getElementById('sfBar').style.width='80%'; }, 400);
 </script>
-<script src="smartfeed-config.js"></script>
-<script src="smartfeed-api.js"></script>
-<script src="dashboard-student-app.js"></script>
 </body>
 </html>
