@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SmartFeed | Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+:root {
+  --bg-primary:    #022c22;
+  --bg-card:       rgba(255, 255, 255, 0.08);
+  --lime:          #4ade80;
+  --lime-hover:    #86efac;
+  --lime-muted:    rgba(74, 222, 128, 0.2);
+  --lime-border:   rgba(74, 222, 128, 0.4);
+  --white:         #ffffff;
+  --white-70:      rgba(255, 255, 255, 0.85);
+  --white-40:      rgba(255, 255, 255, 0.60);
+  --radius-md:     18px;
+  --radius-xl:     32px;
+  --glass-blur:    blur(24px);
+  --glass-border:  1px solid rgba(255, 255, 255, 0.15);
+  --glass-border-t: 1px solid rgba(255, 255, 255, 0.35);
+  --glass-shadow:  inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --font-display:  'Google Sans Display', 'Roboto', sans-serif;
+  --font-body:     'Google Sans', 'Roboto', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(5, 150, 105, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(132, 204, 22, 0.2) 0%, transparent 60%);
+  background-size: 150% 150%;
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border); border-top: var(--glass-border-t);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+}
+
+.logo-header {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--font-display); font-weight: 700; font-size: 1.8rem;
+  color: var(--white); margin-bottom: 8px;
+}
+.logo-header .material-icons { color: var(--lime); font-size: 2.2rem; }
+.subtitle { text-align: center; color: var(--white-70); margin-bottom: 32px; font-size: 0.95rem; }
+
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: var(--white-70); }
+.form-group input, .form-group select {
+  width: 100%; padding: 14px 16px;
+  background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+  color: white; border-radius: 12px; font-size: 1rem;
+  font-family: var(--font-body);
+  transition: border-color 0.2s, background 0.2s;
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--lime); background: rgba(0,0,0,0.3);
+}
+.form-group select option { background: #022c22; color: white; }
+
+.submit-btn {
+  width: 100%; padding: 16px; margin-top: 10px;
+  background: var(--lime); color: #0d1f12; border: none;
+  border-radius: 12px; font-weight: 700; font-size: 1.05rem; cursor: pointer;
+  transition: background 0.2s; font-family: var(--font-body);
+}
+.submit-btn:hover { background: var(--lime-hover); }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.bottom-link { text-align: center; margin-top: 24px; font-size: 0.9rem; color: var(--white-70); }
+.bottom-link a { color: var(--lime); text-decoration: none; font-weight: 700; }
+.bottom-link a:hover { text-decoration: underline; }
+
+#errorMsg { color: #ff5252; font-size: 0.85rem; text-align: center; margin-top: 12px; font-weight: 500; display: none; }
+#successMsg { color: var(--lime); font-size: 0.85rem; text-align: center; margin-top: 12px; font-weight: 500; display: none; }
+
+/* Mess code display for owners after creation */
+.code-display {
+  background: rgba(74, 222, 128, 0.08);
+  border: 2px dashed var(--lime-border);
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  margin-top: 16px;
+  display: none;
+}
+.code-display .code-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); margin-bottom: 6px; }
+.code-display .code-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--white); letter-spacing: 0.15em; }
+.code-display .code-hint { font-size: 0.78rem; color: var(--white-40); margin-top: 8px; }
+
+/* Role pill toggle */
+.role-toggle { display: flex; gap: 0; margin-bottom: 20px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+.role-opt {
+  flex: 1; padding: 14px; text-align: center;
+  background: rgba(0,0,0,0.2); color: var(--white-70);
+  font-weight: 600; font-size: 0.95rem; cursor: pointer;
+  transition: all 0.25s; border: none; font-family: var(--font-body);
+}
+.role-opt:first-child { border-right: 1px solid rgba(255,255,255,0.1); }
+.role-opt.active { background: var(--lime-muted); color: var(--lime); }
+.role-opt:hover:not(.active) { background: rgba(255,255,255,0.05); }
+</style>
+</head>
+<body>
+
+<div class="auth-card">
+  <div class="logo-header"><span class="material-icons">eco</span>SmartFeed</div>
+  <div class="subtitle">Create an account to get started.</div>
+
+  <form id="signupForm">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="name" placeholder="John Doe" required>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="john@college.edu" required>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="At least 6 characters" required minlength="6">
+    </div>
+    
+    <label style="font-size:0.85rem;font-weight:500;margin-bottom:10px;display:block;color:var(--white-70);">I am a...</label>
+    <div class="role-toggle">
+      <button type="button" class="role-opt active" data-role="student" onclick="setRole('student')">🎓 Student</button>
+      <button type="button" class="role-opt" data-role="owner" onclick="setRole('owner')">🍳 Mess Owner</button>
+    </div>
+
+    <!-- STUDENT: Join Code -->
+    <div class="form-group" id="studentFields">
+      <label>Mess Join Code</label>
+      <input type="text" id="joinCode" placeholder="e.g. SILV-4X" style="text-transform:uppercase;letter-spacing:0.1em;font-weight:700;">
+      <div style="font-size:0.75rem;color:var(--white-40);margin-top:6px;">Ask your mess owner for this code.</div>
+    </div>
+
+    <!-- OWNER: Create Mess Name -->
+    <div class="form-group" id="ownerFields" style="display:none;">
+      <label>Your Mess / Hostel Name</label>
+      <input type="text" id="messName" placeholder="e.g. Silver Oak Hostel Mess">
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Sign Up</button>
+    <div id="errorMsg"></div>
+    <div id="successMsg"></div>
+  </form>
+
+  <!-- Generated code display for owner after signup -->
+  <div class="code-display" id="codeDisplay">
+    <div class="code-label">Your Unique Mess Code</div>
+    <div class="code-value" id="generatedCode">----</div>
+    <div class="code-hint">Share this code with your students so they can join your mess.</div>
+  </div>
+
+  <div class="bottom-link">
+    Already have an account? <a href="login.html">Log in here</a>
+  </div>
+</div>
+
+<script>
+let selectedRole = 'student';
+
+function setRole(role) {
+  selectedRole = role;
+  document.querySelectorAll('.role-opt').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.role-opt[data-role="${role}"]`).classList.add('active');
+  
+  document.getElementById('studentFields').style.display = role === 'student' ? 'block' : 'none';
+  document.getElementById('ownerFields').style.display = role === 'owner' ? 'block' : 'none';
+}
+
+function generateMessCode(messName) {
+  // Generate a 6-char alphanumeric code based on name + random
+  const prefix = messName.replace(/[^A-Z]/gi,'').substring(0,3).toUpperCase();
+  const suffix = Math.random().toString(36).substring(2,5).toUpperCase();
+  return prefix + '-' + suffix;
+}
+</script>
+
+<script type="module">
+import { supabase } from './common.js'
+
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const errorMsg = document.getElementById('errorMsg');
+  const successMsg = document.getElementById('successMsg');
+  btn.textContent = "Creating Account...";
+  btn.disabled = true;
+  errorMsg.style.display = 'none';
+  successMsg.style.display = 'none';
+
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const role = selectedRole;
+
+  try {
+    let mess_id = null;
+
+    if (role === 'owner') {
+      // OWNER FLOW: Create a new Mess with a unique code
+      const messName = document.getElementById('messName').value.trim();
+      if (!messName) throw new Error("Please enter your Mess / Hostel name.");
+
+      const messCode = generateMessCode(messName);
+      
+      const { data: messData, error: messError } = await supabase
+        .from('messes')
+        .insert([{ name: messName, mess_code: messCode }])
+        .select()
+        .single();
+        
+      if (messError) throw messError;
+      mess_id = messData.id;
+
+      // Show the generated code to the owner
+      document.getElementById('generatedCode').textContent = messCode;
+      document.getElementById('codeDisplay').style.display = 'block';
+
+    } else {
+      // STUDENT FLOW: Look up mess by join code
+      const joinCode = document.getElementById('joinCode').value.trim().toUpperCase();
+      if (!joinCode) throw new Error("Please enter the Mess Join Code from your mess owner.");
+
+      const { data: messData, error: messError } = await supabase
+        .from('messes')
+        .select('id')
+        .eq('mess_code', joinCode)
+        .single();
+        
+      if (messError || !messData) throw new Error("Invalid Mess Code. Please check with your mess owner and try again.");
+      mess_id = messData.id;
+    }
+
+    // Sign up user with Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (authError) throw authError;
+
+    // Insert into custom profiles table
+    if (authData.user) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([{ 
+          id: authData.user.id, 
+          name: name, 
+          role: role, 
+          mess_id: mess_id 
+        }]);
+        
+      if (profileError) throw profileError;
+
+      if (role === 'owner') {
+        // Show success, let owner copy their code before redirecting
+        successMsg.textContent = "Account created! Save your Mess Code above, then you'll be redirected...";
+        successMsg.style.display = 'block';
+        btn.textContent = "Redirecting...";
+        setTimeout(() => {
+          window.location.href = 'dashboard-owner.html';
+        }, 4000);
+      } else {
+        window.location.href = 'dashboard-student.html';
+      }
+    }
+
+  } catch (err) {
+    errorMsg.textContent = err.message || "An error occurred during signup.";
+    errorMsg.style.display = 'block';
+    btn.textContent = "Sign Up";
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

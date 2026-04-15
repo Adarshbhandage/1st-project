@@ -313,6 +313,66 @@ tr:hover td{background:rgba(241,248,238,0.02);}
   .search-box input{width:120px;}
 }
 </style>
+<style>
+/* Mess Code Banner */
+.mess-code-banner {
+  background: rgba(74, 222, 128, 0.06);
+  border: 1px dashed rgba(74, 222, 128, 0.4);
+  border-radius: var(--r-lg); padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px; margin-bottom: 20px;
+}
+.mcb-left { display: flex; flex-direction: column; gap: 4px; }
+.mcb-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); }
+.mcb-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--white); }
+.mcb-code {
+  font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
+  letter-spacing: 0.15em; color: var(--white); background: rgba(0,0,0,0.2);
+  padding: 8px 20px; border-radius: var(--r-md); user-select: all;
+}
+.mcb-hint { font-size: 0.75rem; color: var(--white-40); }
+
+/* Menu Editor */
+.menu-editor {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border); border-top: var(--glass-border-t);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--r-lg); padding: 24px; margin-bottom: 20px;
+}
+.menu-editor-title {
+  font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+}
+.menu-editor-title .material-icons { color: var(--lime); font-size: 1.1rem; }
+.menu-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.menu-row-label {
+  min-width: 80px; font-size: 0.82rem; font-weight: 600; color: var(--white-70);
+}
+.menu-row input {
+  flex: 1; background: rgba(0,0,0,0.2); border: 1px solid var(--white-20);
+  border-radius: var(--r-sm); padding: 10px 14px; color: var(--white);
+  font-family: var(--font-body); font-size: 0.85rem; outline: none;
+  transition: border-color 0.2s;
+}
+.menu-row input:focus { border-color: var(--lime); }
+.menu-row input::placeholder { color: var(--white-40); }
+.menu-save-btn {
+  background: var(--lime); color: #0d1f12; border: none;
+  padding: 10px 24px; border-radius: var(--r-xl);
+  font-size: 0.85rem; font-weight: 700; cursor: pointer;
+  font-family: var(--font-body); transition: background 0.2s;
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 4px;
+}
+.menu-save-btn:hover { background: var(--lime-hover); }
+.menu-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.menu-save-msg {
+  font-size: 0.78rem; color: var(--lime); margin-left: 12px;
+  display: inline-block; opacity: 0; transition: opacity 0.3s;
+}
+</style>
 </head>
 <body>
 
@@ -335,11 +395,10 @@ tr:hover td{background:rgba(241,248,238,0.02);}
       <a href="#" onclick="switchSection('settings')" data-sec="settings" class="sb-item"><span class="material-icons">settings</span>Settings</a>
       <div style="border-top:1px solid var(--white-20);margin:12px 0;"></div>
       <a href="index.html" class="sb-item"><span class="material-icons">home</span>Back to Home</a>
-      <a href="dashboard-student.html" class="sb-item"><span class="material-icons">school</span>Students Dashboard</a>
     </nav>
     <div class="sb-footer">
       <span class="sb-owner-tag">Mess Owner</span>
-      <div class="sb-owner-name">Chief Steward</div>
+      <div class="sb-owner-name" id="sidebarOwnerName">Loading...</div>
     </div>
   </aside>
 
@@ -348,8 +407,37 @@ tr:hover td{background:rgba(241,248,238,0.02);}
     <div id="section-dashboard" class="app-section active">
     <!-- DASHBOARD SECTION -->
     <div class="page-header">
-      <h1>Mess Overview</h1>
-      <p>Welcome back, Chief Steward. Here is your real-time impact and resource utilization for today.</p>
+      <h1 id="ownerPageTitle">Mess Overview</h1>
+      <p id="ownerPageSub">Welcome back. Here is your real-time impact and resource utilization for today.</p>
+    </div>
+
+    <!-- MESS CODE BANNER -->
+    <div class="mess-code-banner">
+      <div class="mcb-left">
+        <div class="mcb-label">Your Mess Join Code</div>
+        <div class="mcb-name" id="bannerMessName">Loading...</div>
+        <div class="mcb-hint">Share this code with students so they can join your mess.</div>
+      </div>
+      <div class="mcb-code" id="bannerMessCode">----</div>
+    </div>
+
+    <!-- TODAY'S MENU EDITOR -->
+    <div class="menu-editor">
+      <div class="menu-editor-title"><span class="material-icons">restaurant_menu</span> Set Today's Menu</div>
+      <div class="menu-row">
+        <span class="menu-row-label">🍳 Breakfast</span>
+        <input type="text" id="menuInputB" placeholder="e.g. Poha, Chai, Boiled Eggs" />
+      </div>
+      <div class="menu-row">
+        <span class="menu-row-label">🍲 Lunch</span>
+        <input type="text" id="menuInputL" placeholder="e.g. Dal Rice, Roti, Sabzi" />
+      </div>
+      <div class="menu-row">
+        <span class="menu-row-label">🥗 Dinner</span>
+        <input type="text" id="menuInputD" placeholder="e.g. Paneer Butter Masala, Naan" />
+      </div>
+      <button class="menu-save-btn" id="menuSaveBtn"><span class="material-icons" style="font-size:0.9rem">save</span> Save Menu</button>
+      <span class="menu-save-msg" id="menuSaveMsg">✅ Saved!</span>
     </div>
 
     <!-- TOP STATS -->
@@ -411,6 +499,7 @@ tr:hover td{background:rgba(241,248,238,0.02);}
         <div class="chart-legend">
           <div class="leg-item"><div class="leg-dot" style="background:rgba(181,242,60,0.55)"></div>Breakfast</div>
           <div class="leg-item"><div class="leg-dot" style="background:var(--lime)"></div>Lunch</div>
+          <div class="leg-item"><div class="leg-dot" style="background:rgba(34,197,94,0.7)"></div>Dinner</div>
         </div>
       </div>
 
@@ -456,24 +545,52 @@ tr:hover td{background:rgba(241,248,238,0.02);}
     <!-- INVENTORY SECTION -->
     <div id="section-inventory" class="app-section">
       <div class="page-header glass-panel">
-        <h1>Inventory Management</h1>
-        <p>Current stock levels and requirements based on upcoming meals.</p>
+        <h1>Smart Inventory Planner</h1>
+        <p>Auto-estimated ingredient requirements based on <strong>real student attendance data</strong>. Updated live.</p>
       </div>
+
+      <!-- Summary Cards -->
+      <div class="top-stats" id="invSummaryCards">
+        <div class="s-card">
+          <div class="s-card-label"><span class="material-icons">restaurant</span> Today's Total Meals</div>
+          <div class="s-num" id="invTotalMeals">0</div>
+          <div class="s-denom">confirmed across all 3 meals</div>
+        </div>
+        <div class="s-card">
+          <div class="s-card-label"><span class="material-icons">scale</span> Est. Rice Needed</div>
+          <div class="s-num" id="invRice">0 kg</div>
+          <div class="s-denom">@ 200g per student per meal</div>
+        </div>
+        <div class="s-card">
+          <div class="s-card-label"><span class="material-icons">local_fire_department</span> Est. Gas Usage</div>
+          <div class="s-num" id="invGas">0 kg</div>
+          <div class="s-denom">@ 15g LPG per meal served</div>
+        </div>
+      </div>
+
+      <!-- Detailed Ingredient Table -->
       <div class="table-card">
         <div class="table-header">
-          <div class="card-title">Stock Status</div>
+          <div>
+            <div class="card-title">Estimated Ingredient Requirements — Today</div>
+            <div class="card-sub" style="margin-bottom:0">Based on confirmed attendance. Per-student multipliers used.</div>
+          </div>
         </div>
         <div class="tbl-wrap">
         <table>
-          <thead><tr><th>Item</th><th>Stock Available</th><th>Est. Usage (Next 3 Days)</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td>Rice (Basmati)</td><td>150 kg</td><td>80 kg</td><td><span class="badge badge-present" style="background:var(--lime-muted);color:var(--lime)">Optimal</span></td></tr>
-            <tr><td>Lentils (Toor Dal)</td><td>45 kg</td><td>35 kg</td><td><span class="badge badge-present" style="background:var(--lime-muted);color:var(--lime)">Optimal</span></td></tr>
-            <tr><td>Cooking Oil</td><td>15 L</td><td>20 L</td><td><span class="badge badge-expected" style="background:rgba(212,132,90,0.12);color:var(--clay)">Need to order</span></td></tr>
-            <tr><td>Wheat Flour</td><td>120 kg</td><td>90 kg</td><td><span class="badge badge-present" style="background:var(--lime-muted);color:var(--lime)">Optimal</span></td></tr>
-            <tr><td>Vegetables (Assorted)</td><td>30 kg</td><td>60 kg</td><td><span class="badge badge-expected" style="background:rgba(212,132,90,0.12);color:var(--clay)">Need to order</span></td></tr>
+          <thead><tr><th>Ingredient</th><th>Per Student</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th><th>Total Needed</th></tr></thead>
+          <tbody id="invTableBody">
+            <tr><td colspan="6" style="text-align:center;color:var(--white-40);padding:24px;">Loading...</td></tr>
           </tbody>
         </table>
+        </div>
+      </div>
+
+      <!-- Pro tip -->
+      <div class="impact-card" style="margin-top:20px;">
+        <div class="impact-left">
+          <div class="impact-tag"><span class="material-icons">tips_and_updates</span> Smart Tip</div>
+          <div class="impact-label" style="font-size:0.9rem;max-width:600px;">These estimates update in real-time as students confirm their meals. Check back closer to meal cutoff for the most accurate numbers. Quantities are based on standard institutional serving sizes.</div>
         </div>
       </div>
     </div>
@@ -507,17 +624,32 @@ tr:hover td{background:rgba(241,248,238,0.02);}
     <div id="section-students" class="app-section">
       <div class="page-header glass-panel">
         <h1>Student Directory</h1>
-        <p>Manage hostel residents and their mess subscriptions.</p>
+        <p>All students registered to your mess. Updated in real-time as new students join.</p>
+      </div>
+      <div class="top-stats" style="grid-template-columns:1fr 1fr;margin-bottom:20px;">
+        <div class="s-card">
+          <div class="s-card-label"><span class="material-icons">group</span> Total Students</div>
+          <div class="s-num" id="sdTotalCount">0</div>
+          <div class="s-denom">registered in your mess</div>
+        </div>
+        <div class="s-card">
+          <div class="s-card-label"><span class="material-icons">how_to_reg</span> Today's Participation</div>
+          <div class="s-num" id="sdTodayActive">0</div>
+          <div class="s-denom">students voted today</div>
+        </div>
       </div>
       <div class="table-card">
+        <div class="table-header">
+          <div>
+            <div class="card-title">Registered Students</div>
+            <div class="card-sub" style="margin-bottom:0">Showing all students linked to your mess code.</div>
+          </div>
+        </div>
         <div class="tbl-wrap">
         <table>
-          <thead><tr><th>Student Name</th><th>Hostel/Room No.</th><th>Subscription Status</th></tr></thead>
-          <tbody>
-            <tr><td>Adarsh Kumar</td><td>Block A, 102</td><td><span style="color:var(--lime);font-weight:bold;">Active</span></td></tr>
-            <tr><td>Priya Sharma</td><td>Block B, 204</td><td><span style="color:var(--lime);font-weight:bold;">Active</span></td></tr>
-            <tr><td>Rahul Verma</td><td>Block A, 115</td><td><span style="color:var(--clay);font-weight:bold;">Paused</span></td></tr>
-            <tr><td>James Smith</td><td>Block C, 305</td><td><span style="color:var(--lime);font-weight:bold;">Active</span></td></tr>
+          <thead><tr><th>Student Name</th><th>Email</th><th>Joined</th><th>Today's Status</th></tr></thead>
+          <tbody id="sdTableBody">
+            <tr><td colspan="4" style="text-align:center;color:var(--white-40);padding:24px;">Loading...</td></tr>
           </tbody>
         </table>
         </div>
@@ -572,121 +704,435 @@ tr:hover td{background:rgba(241,248,238,0.02);}
   </div>
 </nav>
 
-<script>
-// Tab switching logic
-function switchSection(secId) {
-  // Update nav UI
-  document.querySelectorAll('.sb-item, .tab-item').forEach(el => {
-    if (el.dataset.sec) {
-      el.classList.remove('active');
-    }
-  });
-  document.querySelectorAll(`.sb-item[data-sec="${secId}"], .tab-item[data-sec="${secId}"]`).forEach(el => {
-    el.classList.add('active');
-  });
+<script type="module">
+import { supabase, requireAuth, logout } from './common.js'
 
-  // Update sections
-  document.querySelectorAll('.app-section').forEach(el => {
-    el.classList.remove('active');
+// 1. Auth Guard - Kick out if not logged in or not an owner
+const authData = await requireAuth('owner');
+if (!authData) throw new Error("Authentication required");
+const { user, profile } = authData;
+
+// 2. Populate owner name in sidebar
+document.getElementById('sidebarOwnerName').textContent = profile.name;
+document.getElementById('ownerPageSub').textContent = `Welcome back, ${profile.name}. Here is your real-time impact for today.`;
+
+// 3. Fetch mess info (name + code) and display banner
+const { data: messInfo, error: messErr } = await supabase
+  .from('messes')
+  .select('name, mess_code')
+  .eq('id', profile.mess_id)
+  .single();
+
+if (messInfo) {
+  document.getElementById('bannerMessName').textContent = messInfo.name;
+  document.getElementById('bannerMessCode').textContent = messInfo.mess_code;
+  document.getElementById('ownerPageTitle').textContent = messInfo.name + ' — Overview';
+}
+
+// 4. Add logout to sidebar "Back to Home" and mobile tab
+document.querySelectorAll('.sb-item[href="index.html"], .tab-item[href="index.html"]').forEach(btn => {
+  btn.innerHTML = '<span class="material-icons">logout</span>Logout';
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    logout();
   });
+});
+
+window.switchSection = function(secId) {
+  // Update nav UI
+  document.querySelectorAll('.sb-item, .tab-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`.sb-item[data-sec="${secId}"], .tab-item[data-sec="${secId}"]`).forEach(el => el.classList.add('active'));
+  // Update sections
+  document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
   const target = document.getElementById('section-' + secId);
-  if (target) {
-    target.classList.add('active');
-  }
+  if (target) target.classList.add('active');
 }
 
 // Count up helper
 function countUp(el, target, suffix='', dur=1400) {
-  let s=0; const step=target/(dur/16);
+  let s=0; const step=Math.max(1, target/(dur/16));
+  if(target === 0) { el.textContent = '0'+suffix; return; }
   const t=setInterval(()=>{
     s+=step; if(s>=target){s=target;clearInterval(t);}
     el.textContent=Math.round(s)+suffix;
   },16);
 }
 
-// Sample data — these are just demo values, not claimed as real stats
-const total=200;
-const bVal=142, lVal=178, dVal=156;
-const impactVal=312; // "meals optimised" — not kg
+// Supabase Logic — all date computations are FRESH inside each function call
+// to avoid stale dates when the page stays open across midnight.
 
-setTimeout(()=>{
-  countUp(document.getElementById('bNum'), bVal);
-  countUp(document.getElementById('lNum'), lVal);
-  countUp(document.getElementById('dNum'), dVal);
-  countUp(document.getElementById('impactNum'), impactVal, ' meals');
-  setTimeout(()=>{
-    const bp=Math.round(bVal/total*100);
-    const lp=Math.round(lVal/total*100);
-    const dp=Math.round(dVal/total*100);
-    document.getElementById('bFill').style.width=bp+'%';
-    document.getElementById('lFill').style.width=lp+'%';
-    document.getElementById('dFill').style.width=dp+'%';
-    document.getElementById('bLbl').textContent=bp+'% of hostel registered';
-    document.getElementById('lLbl').textContent=lp+'% of hostel registered';
-    document.getElementById('dLbl').textContent=dp+'% of hostel registered';
-  },200);
-},300);
+// Timezone-safe local date formatter (avoids UTC shift from toISOString)
+function localDateStr(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${dd}`;
+}
 
-// Bar chart
-const wkData=[
-  {d:'Mon',b:58,l:76},{d:'Tue',b:62,l:82},{d:'Wed',b:71,l:88},
-  {d:'Thu',b:69,l:85},{d:'Fri',b:55,l:79},{d:'Sat',b:40,l:55},{d:'Sun',b:35,l:48},
+// Get real student count from DB
+let totalStudents = 1; // fallback
+async function fetchStudentCount() {
+  const { count, error } = await supabase
+    .from('profiles')
+    .select('*', { count: 'exact', head: true })
+    .eq('mess_id', profile.mess_id)
+    .eq('role', 'student');
+  if (!error && count) totalStudents = count;
+}
+await fetchStudentCount();
+
+// We will store the counts here
+let counts = { b: 0, l: 0, d: 0 };
+
+async function fetchTodayData() {
+  // Always compute fresh "today" so data stays correct across midnight
+  const freshToday = localDateStr(new Date());
+
+  const { data, error } = await supabase
+    .from('meal_attendance')
+    .select('*')
+    .eq('mess_id', profile.mess_id)
+    .eq('meal_date', freshToday)
+    .eq('status', 'yes');
+    
+  if (error) {
+    console.error("Error fetching data:", error);
+    return;
+  }
+  
+  counts = { b: 0, l: 0, d: 0 };
+  data.forEach(vote => {
+    if (counts[vote.meal_type] !== undefined) {
+      counts[vote.meal_type]++;
+    }
+  });
+  
+  updateUI();
+  populateTable(data);
+}
+
+function updateUI() {
+  document.getElementById('bNum').textContent = counts.b;
+  document.getElementById('lNum').textContent = counts.l;
+  document.getElementById('dNum').textContent = counts.d;
+  document.getElementById('impactNum').textContent = (counts.b + counts.l + counts.d) + " meals";
+  
+  const bp=Math.round(counts.b/totalStudents*100);
+  const lp=Math.round(counts.l/totalStudents*100);
+  const dp=Math.round(counts.d/totalStudents*100);
+  document.getElementById('bFill').style.width=bp+'%';
+  document.getElementById('lFill').style.width=lp+'%';
+  document.getElementById('dFill').style.width=dp+'%';
+  
+  // Also update inventory estimates
+  if (typeof updateInventory === 'function') updateInventory();
+}
+
+// Real-time listener
+supabase
+  .channel('public:meal_attendance')
+  .on('postgres_changes', { 
+    event: '*', 
+    schema: 'public', 
+    table: 'meal_attendance',
+    filter: `mess_id=eq.${profile.mess_id}`
+  }, payload => {
+    console.log('Realtime change received!', payload);
+    fetchTodayData();
+    buildWeeklyChart();
+  })
+  .subscribe();
+
+// Initial Fetch
+fetchTodayData();
+
+// ── REAL Weekly Chart ──
+const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const ca = document.getElementById('chartArea');
+const maxBarH = 120;
+
+async function buildWeeklyChart() {
+  // Always use a FRESH date so chart stays current across midnight
+  const freshNow = new Date();
+
+  // Get dates for last 7 days
+  const dates = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(freshNow);
+    d.setDate(d.getDate() - i);
+    dates.push(d);
+  }
+
+  const startDate = localDateStr(dates[0]);
+  const endDate   = localDateStr(dates[6]);
+
+  const { data: weekData, error } = await supabase
+    .from('meal_attendance')
+    .select('meal_type, meal_date, status')
+    .eq('mess_id', profile.mess_id)
+    .eq('status', 'yes')
+    .gte('meal_date', startDate)
+    .lte('meal_date', endDate);
+
+  if (error) { console.error('Chart fetch error:', error); return; }
+
+  // Aggregate per day using local date keys
+  const dayCounts = {};
+  dates.forEach(d => {
+    dayCounts[localDateStr(d)] = { b: 0, l: 0, d: 0 };
+  });
+  weekData.forEach(row => {
+    if (dayCounts[row.meal_date] && dayCounts[row.meal_date][row.meal_type] !== undefined) {
+      dayCounts[row.meal_date][row.meal_type]++;
+    }
+  });
+
+  // Find max value for scaling
+  let maxVal = 1;
+  Object.values(dayCounts).forEach(c => {
+    maxVal = Math.max(maxVal, c.b, c.l, c.d);
+  });
+
+  ca.innerHTML = '';
+  dates.forEach(date => {
+    const key = localDateStr(date);
+    const c = dayCounts[key];
+    const bH = Math.round((c.b / maxVal) * maxBarH);
+    const lH = Math.round((c.l / maxVal) * maxBarH);
+    const dH = Math.round((c.d / maxVal) * maxBarH);
+    const col = document.createElement('div');
+    col.className = 'chart-col';
+    col.innerHTML = `<div class="bar-grp" style="height:${maxBarH}px;align-items:flex-end;"><div class="bar bk" style="height:0px" data-h="${bH}px"></div><div class="bar ln" style="height:0px" data-h="${lH}px"></div><div class="bar" style="height:0px;background:rgba(34,197,94,0.7);border-radius:3px 3px 0 0;flex:1;transition:height 1.4s ease;" data-h="${dH}px"></div></div><div class="bar-day-lbl">${dayNames[date.getDay()]}</div>`;
+    ca.appendChild(col);
+  });
+  setTimeout(() => { document.querySelectorAll('.bar').forEach(b => { b.style.height = b.dataset.h; }); }, 350);
+}
+buildWeeklyChart();
+
+// ── REAL Recent Activity Feed ──
+const fl = document.getElementById('feedList');
+
+async function loadRecentActivity() {
+  // Fetch latest 8 votes for this mess, joining with profiles for names
+  const { data: recentVotes, error } = await supabase
+    .from('meal_attendance')
+    .select('meal_type, status, updated_at, student_id, profiles(name)')
+    .eq('mess_id', profile.mess_id)
+    .order('updated_at', { ascending: false })
+    .limit(8);
+
+  if (error) { console.error('Feed fetch error:', error); return; }
+
+  fl.innerHTML = '';
+  if (recentVotes.length === 0) {
+    fl.innerHTML = '<div style="color:var(--white-40);text-align:center;padding:20px;font-size:0.85rem;">No activity yet. Waiting for students to vote...</div>';
+    return;
+  }
+
+  recentVotes.forEach(v => {
+    const studentName = v.profiles?.name || 'Student';
+    const initials = studentName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+    const mealLabel = v.meal_type === 'b' ? 'BREAKFAST' : (v.meal_type === 'l' ? 'LUNCH' : 'DINNER');
+    const statusText = v.status === 'yes' ? 'Confirmed' : 'Skipped';
+    const timeAgo = getTimeAgo(new Date(v.updated_at));
+    const el = document.createElement('div');
+    el.className = 'feed-item';
+    el.innerHTML = `<div class="f-avatar">${initials}</div><div class="f-info"><div class="f-name">${studentName}</div><div class="f-sub">${statusText} · ${timeAgo}</div></div><div class="f-meal">${mealLabel}</div>`;
+    fl.appendChild(el);
+  });
+}
+
+function getTimeAgo(date) {
+  const seconds = Math.floor((new Date() - date) / 1000);
+  if (seconds < 60) return 'just now';
+  if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+  if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+  return Math.floor(seconds / 86400) + 'd ago';
+}
+
+loadRecentActivity();
+
+// Also refresh feed on realtime changes
+supabase
+  .channel('feed-updates')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'meal_attendance', filter: `mess_id=eq.${profile.mess_id}` }, () => {
+    loadRecentActivity();
+    buildWeeklyChart();
+  })
+  .subscribe();
+
+// ── REAL Table (Daily Log) ──
+function populateTable(realData) {
+  const tb = document.getElementById('tBody');
+  tb.innerHTML = '';
+  if (realData.length === 0) {
+    tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--white-40);padding:24px;">No attendance records for today yet.</td></tr>';
+    return;
+  }
+  realData.slice(0, 15).forEach(async r => {
+    const { data: pData } = await supabase.from('profiles').select('name').eq('id', r.student_id).single();
+    const name = pData?.name || r.student_id.substring(0, 8);
+    const mealName = r.meal_type === 'b' ? 'BREAKFAST' : (r.meal_type === 'l' ? 'LUNCH' : 'DINNER');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${name}</td><td><span class="badge badge-present">✓ ${r.status === 'yes' ? 'Confirmed' : 'Skipped'}</span></td><td>${getTimeAgo(new Date(r.updated_at))}</td><td><span class="meal-lbl">${mealName}</span></td><td></td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ── SMART INVENTORY ESTIMATION ──
+// Standard institutional per-student quantities (grams or ml)
+const ingredients = [
+  { name: 'Rice (Basmati)',      unit: 'kg', perStudent: { b: 80,  l: 200, d: 180 } },
+  { name: 'Wheat Flour (Atta)',  unit: 'kg', perStudent: { b: 60,  l: 50,  d: 80  } },
+  { name: 'Lentils (Dal)',       unit: 'kg', perStudent: { b: 0,   l: 60,  d: 50  } },
+  { name: 'Cooking Oil',         unit: 'L',  perStudent: { b: 15,  l: 25,  d: 25  } },
+  { name: 'Vegetables (Mixed)',  unit: 'kg', perStudent: { b: 30,  l: 120, d: 100 } },
+  { name: 'Onions',              unit: 'kg', perStudent: { b: 10,  l: 40,  d: 35  } },
+  { name: 'Milk',                unit: 'L',  perStudent: { b: 150, l: 0,   d: 0   } },
+  { name: 'Sugar',               unit: 'kg', perStudent: { b: 15,  l: 5,   d: 5   } },
+  { name: 'Spices (Masala Mix)', unit: 'kg', perStudent: { b: 2,   l: 8,   d: 8   } },
+  { name: 'LPG Gas',             unit: 'kg', perStudent: { b: 10,  l: 18,  d: 18  } },
 ];
-const ca=document.getElementById('chartArea');
-const maxBarH=120; // px
-const maxVal=100;
-wkData.forEach(day=>{
-  const bH=Math.round((day.b/maxVal)*maxBarH);
-  const lH=Math.round((day.l/maxVal)*maxBarH);
-  const col=document.createElement('div');
-  col.className='chart-col';
-  col.innerHTML=`<div class="bar-grp" style="height:${maxBarH}px;align-items:flex-end;"><div class="bar bk" style="height:0px" data-h="${bH}px"></div><div class="bar ln" style="height:0px" data-h="${lH}px"></div></div><div class="bar-day-lbl">${day.d}</div>`;
-  ca.appendChild(col);
-});
-setTimeout(()=>{ document.querySelectorAll('.bar').forEach(b=>{ b.style.height=b.dataset.h; }); },350);
 
-// Live feed
-const sampleFeed=[
-  {i:'JS',n:'James Smith',sub:'Student · ID #8821',m:'LUNCH'},
-  {i:'AL',n:'Anya Lopez',sub:'Student · ID #4492',m:'LUNCH'},
-  {i:'RT',n:'Ryan T.',sub:'Student · ID #1029',m:'LUNCH'},
-  {i:'MK',n:'Maya Kaur',sub:'Student · ID #9931',m:'LUNCH'},
-  {i:'BC',n:'Ben Carter',sub:'Student · ID #0023',m:'LUNCH'},
-];
-const fl=document.getElementById('feedList');
-sampleFeed.forEach(s=>{
-  const el=document.createElement('div');
-  el.className='feed-item';
-  el.innerHTML=`<div class="f-avatar">${s.i}</div><div class="f-info"><div class="f-name">${s.n}</div><div class="f-sub">${s.sub}</div></div><div class="f-meal">${s.m}</div>`;
-  fl.appendChild(el);
-});
-const liveNames=[['PR','Priya Rao'],['AM','Arjun M.'],['SB','Sneha B.'],['RK','Rahul K.']];
-let li=0;
-setInterval(()=>{
-  const [i,n]=liveNames[li%liveNames.length];
-  const el=document.createElement('div');
-  el.className='feed-item';
-  el.innerHTML=`<div class="f-avatar">${i}</div><div class="f-info"><div class="f-name">${n}</div><div class="f-sub">just now</div></div><div class="f-meal">DINNER</div>`;
-  fl.prepend(el);
-  if(fl.children.length>7) fl.lastChild.remove();
-  li++;
-},4500);
+function updateInventory() {
+  const totalMeals = counts.b + counts.l + counts.d;
+  document.getElementById('invTotalMeals').textContent = totalMeals;
 
-// Table
-const rows=[
-  {n:'Zoe Hernandez',s:'present',t:'12:14 PM',m:'LUNCH'},
-  {n:"Liam O'Conner",s:'present',t:'12:12 PM',m:'LUNCH'},
-  {n:'Sarah Wang',s:'expected',t:'--:--',m:'LUNCH'},
-  {n:'David Miller',s:'present',t:'12:05 PM',m:'LUNCH'},
-  {n:'Priya Sharma',s:'present',t:'7:42 AM',m:'BREAKFAST'},
-  {n:'Arjun Mehta',s:'expected',t:'--:--',m:'DINNER'},
-];
-const tb=document.getElementById('tBody');
-rows.forEach(r=>{
-  const tr=document.createElement('tr');
-  tr.innerHTML=`<td>${r.n}</td><td><span class="badge badge-${r.s}">${r.s==='present'?'✓ Present':'⏳ Expected'}</span></td><td>${r.t}</td><td><span class="meal-lbl">${r.m}</span></td><td><button class="more-btn"><span class="material-icons" style="font-size:1.1rem">more_horiz</span></button></td>`;
-  tb.appendChild(tr);
+  // Rice summary card
+  const riceRow = ingredients.find(i => i.name.includes('Rice'));
+  const totalRice = (counts.b * riceRow.perStudent.b + counts.l * riceRow.perStudent.l + counts.d * riceRow.perStudent.d) / 1000;
+  document.getElementById('invRice').textContent = totalRice.toFixed(1) + ' kg';
+
+  // Gas summary card
+  const gasRow = ingredients.find(i => i.name.includes('LPG'));
+  const totalGas = (counts.b * gasRow.perStudent.b + counts.l * gasRow.perStudent.l + counts.d * gasRow.perStudent.d) / 1000;
+  document.getElementById('invGas').textContent = totalGas.toFixed(1) + ' kg';
+
+  // Build table
+  const tbody = document.getElementById('invTableBody');
+  tbody.innerHTML = '';
+
+  if (totalMeals === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--white-40);padding:24px;">No confirmed meals yet. Estimates will appear as students vote.</td></tr>';
+    return;
+  }
+
+  ingredients.forEach(ing => {
+    const bQty = (counts.b * ing.perStudent.b) / 1000;
+    const lQty = (counts.l * ing.perStudent.l) / 1000;
+    const dQty = (counts.d * ing.perStudent.d) / 1000;
+    const total = bQty + lQty + dQty;
+
+    if (total === 0) return; // skip irrelevant rows
+
+    // Per-student average in grams for display
+    const avgPerStudent = Math.round((ing.perStudent.b + ing.perStudent.l + ing.perStudent.d) / 3);
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${ing.name}</strong></td>
+      <td style="color:var(--white-40)">${avgPerStudent}g / meal</td>
+      <td>${bQty > 0 ? bQty.toFixed(1) + ' ' + ing.unit : '—'}</td>
+      <td>${lQty > 0 ? lQty.toFixed(1) + ' ' + ing.unit : '—'}</td>
+      <td>${dQty > 0 ? dQty.toFixed(1) + ' ' + ing.unit : '—'}</td>
+      <td><strong style="color:var(--lime)">${total.toFixed(1)} ${ing.unit}</strong></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── REAL Student Directory ──
+async function loadStudentDirectory() {
+  const { data: students, error } = await supabase
+    .from('profiles')
+    .select('id, name, created_at')
+    .eq('mess_id', profile.mess_id)
+    .eq('role', 'student')
+    .order('created_at', { ascending: false });
+
+  if (error) { console.error('Student dir error:', error); return; }
+
+  document.getElementById('sdTotalCount').textContent = students.length;
+
+  // Check who voted today
+  const { data: todayVotes } = await supabase
+    .from('meal_attendance')
+    .select('student_id')
+    .eq('mess_id', profile.mess_id)
+    .eq('meal_date', localDateStr(new Date()));
+
+  const votedIds = new Set((todayVotes || []).map(v => v.student_id));
+  document.getElementById('sdTodayActive').textContent = votedIds.size;
+
+  const tbody = document.getElementById('sdTableBody');
+  tbody.innerHTML = '';
+
+  if (students.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--white-40);padding:24px;">No students have joined your mess yet. Share your Mess Code!</td></tr>';
+    return;
+  }
+
+  students.forEach(s => {
+    const joinDate = new Date(s.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    const hasVoted = votedIds.has(s.id);
+    const statusBadge = hasVoted
+      ? '<span class="badge badge-present" style="background:var(--lime-muted);color:var(--lime)">Voted Today</span>'
+      : '<span class="badge badge-expected" style="background:rgba(212,132,90,0.12);color:var(--clay)">Not yet</span>';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><strong>${s.name}</strong></td><td style="color:var(--white-40)">Student</td><td>${joinDate}</td><td>${statusBadge}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+loadStudentDirectory();
+
+// ── MENU EDITOR ──
+const menuInputB = document.getElementById('menuInputB');
+const menuInputL = document.getElementById('menuInputL');
+const menuInputD = document.getElementById('menuInputD');
+const menuSaveBtn = document.getElementById('menuSaveBtn');
+const menuSaveMsg = document.getElementById('menuSaveMsg');
+
+async function loadOwnerMenus() {
+  const freshToday = localDateStr(new Date());
+  const { data, error } = await supabase
+    .from('daily_menus')
+    .select('meal_type, menu_text')
+    .eq('mess_id', profile.mess_id)
+    .eq('meal_date', freshToday);
+  if (!error && data) {
+    data.forEach(r => {
+      if (r.meal_type === 'b') menuInputB.value = r.menu_text || '';
+      if (r.meal_type === 'l') menuInputL.value = r.menu_text || '';
+      if (r.meal_type === 'd') menuInputD.value = r.menu_text || '';
+    });
+  }
+}
+loadOwnerMenus();
+
+menuSaveBtn.addEventListener('click', async () => {
+  menuSaveBtn.disabled = true;
+  menuSaveBtn.innerHTML = '<span class="material-icons" style="font-size:0.9rem">hourglass_top</span> Saving...';
+  const freshToday = localDateStr(new Date());
+  const menus = [
+    { mess_id: profile.mess_id, meal_date: freshToday, meal_type: 'b', menu_text: menuInputB.value.trim(), updated_at: new Date().toISOString() },
+    { mess_id: profile.mess_id, meal_date: freshToday, meal_type: 'l', menu_text: menuInputL.value.trim(), updated_at: new Date().toISOString() },
+    { mess_id: profile.mess_id, meal_date: freshToday, meal_type: 'd', menu_text: menuInputD.value.trim(), updated_at: new Date().toISOString() }
+  ];
+  const { error } = await supabase
+    .from('daily_menus')
+    .upsert(menus, { onConflict: 'mess_id,meal_date,meal_type' });
+  if (error) {
+    console.error('Menu save error:', error);
+    alert('Failed to save menu. Please try again.');
+  } else {
+    menuSaveMsg.style.opacity = '1';
+    setTimeout(() => { menuSaveMsg.style.opacity = '0'; }, 2500);
+  }
+  menuSaveBtn.disabled = false;
+  menuSaveBtn.innerHTML = '<span class="material-icons" style="font-size:0.9rem">save</span> Save Menu';
 });
+
 </script>
 </body>
 </html>

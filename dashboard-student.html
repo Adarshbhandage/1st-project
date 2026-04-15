@@ -1,414 +1,1241 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SmartFeed | Student Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-<style>
-/* ── TOKENS (Glassmorphism Deep Theme - Enhanced) ── */
-:root {
-  --bg-primary:    #022c22;
-  --bg-secondary:  rgba(6, 78, 59, 0.4);
-  --bg-card:       rgba(255, 255, 255, 0.08);
-  --bg-card-alt:   rgba(255, 255, 255, 0.04);
-  --surface:       rgba(255, 255, 255, 0.1);
-  --lime:          #4ade80;
-  --lime-hover:    #86efac;
-  --lime-muted:    rgba(74, 222, 128, 0.2);
-  --lime-border:   rgba(74, 222, 128, 0.4);
-  --white:         #ffffff;
-  --white-70:      rgba(255, 255, 255, 0.85);
-  --white-40:      rgba(255, 255, 255, 0.60);
-  --white-20:      rgba(255, 255, 255, 0.25);
-  --green-accent:  #22c55e;
-  --red:           #ff5252;
-  --red-muted:     rgba(255,82,82,0.12);
-  --radius-sm:     10px;
-  --radius-md:     18px;
-  --radius-lg:     24px;
-  --radius-xl:     32px;
-  --r-sm: var(--radius-sm); --r-md: var(--radius-md); --r-lg: var(--radius-lg); --r-xl: var(--radius-xl);
-  --glass-blur:    blur(24px);
-  --glass-border:  1px solid rgba(255, 255, 255, 0.15);
-  --glass-border-t: 1px solid rgba(255, 255, 255, 0.35);
-  --glass-shadow:  inset 0 1px 1px rgba(255,255,255,0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  --font-display:  'Google Sans Display', 'Roboto', sans-serif;
-  --font-body:     'Google Sans', 'Roboto', sans-serif;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartFeed | Student Dashboard</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* ── TOKENS (Glassmorphism Deep Theme - Enhanced) ── */
+    :root {
+      --bg-primary: #022c22;
+      --bg-secondary: rgba(6, 78, 59, 0.4);
+      --bg-card: rgba(255, 255, 255, 0.08);
+      --bg-card-alt: rgba(255, 255, 255, 0.04);
+      --surface: rgba(255, 255, 255, 0.1);
+      --lime: #4ade80;
+      --lime-hover: #86efac;
+      --lime-muted: rgba(74, 222, 128, 0.2);
+      --lime-border: rgba(74, 222, 128, 0.4);
+      --white: #ffffff;
+      --white-70: rgba(255, 255, 255, 0.85);
+      --white-40: rgba(255, 255, 255, 0.60);
+      --white-20: rgba(255, 255, 255, 0.25);
+      --green-accent: #22c55e;
+      --red: #ff5252;
+      --red-muted: rgba(255, 82, 82, 0.12);
+      --radius-sm: 10px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --r-sm: var(--radius-sm);
+      --r-md: var(--radius-md);
+      --r-lg: var(--radius-lg);
+      --r-xl: var(--radius-xl);
+      --glass-blur: blur(24px);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+      --glass-border-t: 1px solid rgba(255, 255, 255, 0.35);
+      --glass-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      --font-display: 'Google Sans Display', 'Roboto', sans-serif;
+      --font-body: 'Google Sans', 'Roboto', sans-serif;
+    }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-@keyframes gradientMovement {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-body {
-  font-family: var(--font-body);
-  background-color: var(--bg-primary);
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(5, 150, 105, 0.4) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.4) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(132, 204, 22, 0.2) 0%, transparent 60%);
-  background-size: 150% 150%;
-  animation: gradientMovement 20s ease infinite;
-  color: var(--white);
-  -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-}
+    @keyframes gradientMovement {
+      0% {
+        background-position: 0% 50%;
+      }
 
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-  border: var(--glass-border); border-top: var(--glass-border-t);
-  box-shadow: var(--glass-shadow);
-  border-radius: var(--radius-xl);
-  padding: 32px;
-  margin-bottom: 24px;
-}
+      50% {
+        background-position: 100% 50%;
+      }
 
-/* NAV */
-.nav {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(2, 44, 34, 0.6);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0 24px; height: 64px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--font-display); font-weight: 700; font-size: 1.1rem;
-  color: var(--white); text-decoration: none;
-}
-.nav-logo .material-icons { color: var(--lime); }
-.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
-.nav-links a {
-  color: var(--white-70); text-decoration: none; font-size: 0.9rem; font-weight: 500;
-  padding: 8px 12px; border-radius: var(--r-sm); transition: background 0.2s, color 0.2s;
-}
-.nav-links a:hover, .nav-links a.active { background: var(--white-20); color: var(--white); }
-.nav-links a.active { color: var(--lime); }
-.nav-cta {
-  background: var(--lime); color: #0d1f12;
-  padding: 8px 18px; border-radius: var(--r-xl);
-  font-weight: 700; font-size: 0.85rem; text-decoration: none;
-  transition: background 0.2s;
-}
-.nav-cta:hover { background: var(--lime-hover); }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
 
-/* MAIN */
-.main {
-  max-width: 900px; margin: 0 auto;
-  padding: 36px 24px 120px;
-}
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-primary);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(5, 150, 105, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(132, 204, 22, 0.2) 0%, transparent 60%);
+      background-size: 150% 150%;
+      animation: gradientMovement 20s ease infinite;
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
 
-/* DATE / GREETING */
-.date-tag {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--lime); margin-bottom: 10px;
-}
-.greeting {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
-  font-weight: 700; margin-bottom: 28px; line-height: 1.2;
-}
+    .glass-panel {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-top: var(--glass-border-t);
+      box-shadow: var(--glass-shadow);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
 
-/* WEEK STRIP */
-.week-strip {
-  display: flex; gap: 8px; margin-bottom: 36px;
-  overflow-x: auto; -ms-overflow-style: none; scrollbar-width: none;
-  padding-bottom: 2px;
-}
-.week-strip::-webkit-scrollbar { display: none; }
-.week-day {
-  min-width: 52px; height: 74px;
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-  border: var(--glass-border);
-  border-top: var(--glass-border-t);
-  border-radius: var(--r-md);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  cursor: pointer; flex-shrink: 0; transition: border-color 0.2s, background 0.2s;
-}
-.week-day:hover { border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
-.week-day.today {
-  background: var(--lime-muted); border-color: var(--lime);
-}
-.week-day .wd-name { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--white-70); }
-.week-day .wd-num { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--white); }
-.week-day .wd-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lime); opacity: 0.4; }
-.week-day.today .wd-name { color: var(--lime); }
-.week-day.today .wd-num { color: var(--lime); }
-.week-day.today .wd-dot { background: var(--lime); opacity: 1; box-shadow: 0 0 10px var(--lime); }
+    /* NAV */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(2, 44, 34, 0.6);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-/* MEALS */
-.meals-heading {
-  font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;
-  margin-bottom: 16px;
-}
-.meals-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 16px; margin-bottom: 28px;
-}
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--white);
+      text-decoration: none;
+    }
 
-/* MEAL CARD */
-.meal-card {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-  border: var(--glass-border);
-  border-top: var(--glass-border-t);
-  box-shadow: var(--glass-shadow);
-  border-radius: var(--r-lg);
-  padding: 20px; display: flex; flex-direction: column;
-  transition: border-color 0.25s, transform 0.2s;
-  min-height: 280px;
-}
-.meal-card:hover { border-color: var(--lime-border); }
-.meal-emoji { font-size: 1.8rem; margin-bottom: 10px; }
-.meal-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
-.meal-time { font-size: 0.78rem; color: var(--white-70); margin-bottom: 12px; line-height: 1.4; }
-.meal-menu { font-size: 0; /* hidden on this view */ }
-.meal-btns { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
-.mbtn {
-  width: 100%; padding: 10px 14px; border-radius: var(--r-md);
-  font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  transition: all 0.2s; font-family: var(--font-body);
-}
-.mbtn-yes {
-  background: var(--lime-muted); border: 1px solid var(--lime-border);
-  color: var(--lime);
-}
-.mbtn-yes:hover, .mbtn-yes.chosen {
-  background: var(--lime); color: #0d1f12;
-}
-.mbtn-yes .material-icons { font-size: 0.9rem; }
-.mbtn-no {
-  background: transparent; border: 1px solid var(--white-20); color: var(--white-70);
-}
-.mbtn-no:hover { border-color: rgba(255,82,82,0.4); color: var(--red); }
-.mbtn-no.chosen { background: var(--red-muted); border-color: rgba(255,82,82,0.4); color: var(--red); }
-.cutoff-tag {
-  font-size: 0.68rem; color: var(--white-40); margin-top: 10px;
-  display: flex; align-items: center; gap: 4px;
-}
-.cutoff-tag .material-icons { font-size: 0.75rem; }
+    .nav-logo .material-icons {
+      color: var(--lime);
+    }
 
-/* BOTTOM ROW */
-.bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.b-card {
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-  border: var(--glass-border);
-  border-top: var(--glass-border-t);
-  box-shadow: var(--glass-shadow);
-  border-radius: var(--r-lg); padding: 24px;
-}
-.b-card-title {
-  font-family: var(--font-display); font-size: 0.95rem; font-weight: 700;
-  display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
-}
-.b-card-title .material-icons { color: var(--lime); font-size: 1.1rem; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
 
-/* streak */
-.streak-num { font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--lime); line-height: 1; }
-.streak-days { font-size: 0.85rem; color: var(--white-70); margin-top: 2px; margin-bottom: 16px; }
-.prog-track { height: 5px; background: var(--white-20); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
-.prog-fill { height: 100%; background: var(--lime); border-radius: 3px; width: 0%; transition: width 1.4s ease; }
-.prog-hint { font-size: 0.72rem; color: var(--white-40); }
-.impact-pill {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--lime-muted); border: 1px solid var(--lime-border);
-  border-radius: var(--r-md); padding: 12px 14px;
-  font-size: 0.82rem; color: var(--lime); margin-top: 16px;
-}
-.impact-pill .material-icons { font-size: 1rem; }
+    .nav-links a {
+      color: var(--white-70);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: var(--r-sm);
+      transition: background 0.2s, color 0.2s;
+    }
 
-/* chef */
-.chef-photo {
-  width: 100%; height: 120px; object-fit: cover; object-position: center;
-  border-radius: var(--r-md); margin-bottom: 14px;
-  filter: brightness(0.75) saturate(1.1);
-}
-.chef-tag-label {
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--lime); margin-bottom: 8px;
-}
-.chef-quote {
-  font-size: 0.88rem; color: var(--white-70); line-height: 1.6; font-style: italic;
-}
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: var(--white-20);
+      color: var(--white);
+    }
 
-/* MOBILE TAB BAR */
-.tab-bar {
-  display: none; position: fixed; bottom: 0; left: 0; right: 0;
-  background: rgba(8, 15, 30, 0.7); backdrop-filter: var(--glass-blur);
-  border-top: var(--glass-border);
-  padding: 8px 0 max(8px, env(safe-area-inset-bottom)); z-index: 500;
-}
-.tab-bar-inner { display: flex; justify-content: space-around; }
-.tab-item {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  color: var(--white-40); text-decoration: none;
-  font-size: 0.62rem; font-weight: 500; padding: 4px 14px; transition: color 0.2s;
-}
-.tab-item.active, .tab-item:hover { color: var(--lime); }
-.tab-item .material-icons { font-size: 1.25rem; }
+    .nav-links a.active {
+      color: var(--lime);
+    }
 
-@media (max-width: 700px) {
-  .nav-links, .nav-cta { display: none; }
-  .tab-bar { display: block; }
-  body { padding-bottom: 68px; }
-  .main { padding: 24px 16px 100px; }
-  .meals-grid { grid-template-columns: 1fr; }
-  .bottom-grid { grid-template-columns: 1fr; }
-  .meal-card { min-height: auto; }
-}
-@media (min-width: 701px) and (max-width: 900px) {
-  .meals-grid { grid-template-columns: 1fr 1fr; }
-}
-</style>
+    .nav-cta {
+      background: var(--lime);
+      color: #0d1f12;
+      padding: 8px 18px;
+      border-radius: var(--r-xl);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--lime-hover);
+    }
+
+    /* MAIN */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 36px 24px 120px;
+    }
+
+    /* DATE / GREETING */
+    .date-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 10px;
+    }
+
+    .greeting {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 28px;
+      line-height: 1.2;
+    }
+
+    /* WEEK STRIP */
+    .week-strip {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 36px;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .week-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .week-day {
+      min-width: 52px;
+      height: 74px;
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-top: var(--glass-border-t);
+      border-radius: var(--r-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .week-day:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .week-day.today {
+      background: var(--lime-muted);
+      border-color: var(--lime);
+    }
+
+    .week-day .wd-name {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white-70);
+    }
+
+    .week-day .wd-num {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .week-day .wd-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--lime);
+      opacity: 0.4;
+    }
+
+    .week-day.today .wd-name {
+      color: var(--lime);
+    }
+
+    .week-day.today .wd-num {
+      color: var(--lime);
+    }
+
+    .week-day.today .wd-dot {
+      background: var(--lime);
+      opacity: 1;
+      box-shadow: 0 0 10px var(--lime);
+    }
+
+    /* MEALS */
+    .meals-heading {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .meals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    /* MEAL CARD */
+    .meal-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-top: var(--glass-border-t);
+      box-shadow: var(--glass-shadow);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.25s, transform 0.2s;
+      min-height: 280px;
+    }
+
+    .meal-card:hover {
+      border-color: var(--lime-border);
+    }
+
+    .meal-emoji {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .meal-name {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .meal-time {
+      font-size: 0.78rem;
+      color: var(--white-70);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .meal-menu {
+      font-size: 0.78rem;
+      color: var(--white-70);
+      margin-bottom: 12px;
+      line-height: 1.5;
+      min-height: 20px;
+    }
+    .meal-menu .menu-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 3px;
+    }
+    .meal-menu .menu-items {
+      color: var(--white-70);
+    }
+
+    /* LEAVE MESS */
+    .leave-section {
+      margin-top: 32px;
+      padding: 24px;
+      border: 1px dashed rgba(255, 82, 82, 0.3);
+      border-radius: var(--r-lg);
+      background: rgba(255, 82, 82, 0.04);
+      text-align: center;
+    }
+    .leave-section .leave-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--red); margin-bottom: 8px;
+    }
+    .leave-section .leave-desc {
+      font-size: 0.82rem; color: var(--white-40); margin-bottom: 16px; line-height: 1.5;
+    }
+    .leave-btn {
+      background: transparent; border: 1px solid rgba(255,82,82,0.4);
+      color: var(--red); padding: 10px 24px; border-radius: var(--r-xl);
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      font-family: var(--font-body); transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .leave-btn:hover {
+      background: rgba(255,82,82,0.12); border-color: var(--red);
+    }
+
+    /* CONFIRM MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--bg-primary); border: var(--glass-border);
+      border-radius: var(--r-xl); padding: 32px; max-width: 400px; width: 90%;
+      text-align: center; box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+    .modal-box h3 {
+      font-family: var(--font-display); margin-bottom: 12px; color: var(--red);
+    }
+    .modal-box p {
+      font-size: 0.88rem; color: var(--white-70); line-height: 1.6; margin-bottom: 24px;
+    }
+    .modal-actions { display: flex; gap: 12px; justify-content: center; }
+    .modal-cancel {
+      background: var(--bg-card); border: 1px solid var(--white-20);
+      color: var(--white-70); padding: 10px 24px; border-radius: var(--r-xl);
+      font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: var(--font-body);
+    }
+    .modal-confirm {
+      background: var(--red); border: none; color: #fff;
+      padding: 10px 24px; border-radius: var(--r-xl);
+      font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: var(--font-body);
+    }
+
+    .meal-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .mbtn {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--r-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .mbtn-yes {
+      background: var(--lime-muted);
+      border: 1px solid var(--lime-border);
+      color: var(--lime);
+    }
+
+    .mbtn-yes:hover,
+    .mbtn-yes.chosen {
+      background: var(--lime);
+      color: #0d1f12;
+    }
+
+    .mbtn-yes .material-icons {
+      font-size: 0.9rem;
+    }
+
+    .mbtn-no {
+      background: transparent;
+      border: 1px solid var(--white-20);
+      color: var(--white-70);
+    }
+
+    .mbtn-no:hover {
+      border-color: rgba(255, 82, 82, 0.4);
+      color: var(--red);
+    }
+
+    .mbtn-no.chosen {
+      background: var(--red-muted);
+      border-color: rgba(255, 82, 82, 0.4);
+      color: var(--red);
+    }
+
+    .mbtn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .meal-card.locked {
+      opacity: 0.7;
+    }
+
+    .meal-card.locked .meal-btns {
+      pointer-events: none;
+    }
+
+    .cutoff-tag {
+      font-size: 0.68rem;
+      color: var(--white-40);
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.3s;
+    }
+
+    .cutoff-tag .material-icons {
+      font-size: 0.75rem;
+    }
+
+    .cutoff-tag.expired {
+      color: var(--red);
+    }
+
+    .cutoff-tag.urgent {
+      color: #fbbf24;
+    }
+
+    /* Notification toast */
+    .notif-toast {
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      z-index: 999;
+      background: rgba(6, 78, 59, 0.95);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--lime-border);
+      border-radius: var(--r-md);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--white);
+      font-size: 0.85rem;
+      font-weight: 500;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      transform: translateX(120%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .notif-toast.show {
+      transform: translateX(0);
+    }
+
+    .notif-toast .material-icons {
+      color: #fbbf24;
+      font-size: 1.2rem;
+    }
+
+    /* BOTTOM ROW */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .b-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-top: var(--glass-border-t);
+      box-shadow: var(--glass-shadow);
+      border-radius: var(--r-lg);
+      padding: 24px;
+    }
+
+    .b-card-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .b-card-title .material-icons {
+      color: var(--lime);
+      font-size: 1.1rem;
+    }
+
+    /* streak */
+    .streak-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--lime);
+      line-height: 1;
+    }
+
+    .streak-days {
+      font-size: 0.85rem;
+      color: var(--white-70);
+      margin-top: 2px;
+      margin-bottom: 16px;
+    }
+
+    .prog-track {
+      height: 5px;
+      background: var(--white-20);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .prog-fill {
+      height: 100%;
+      background: var(--lime);
+      border-radius: 3px;
+      width: 0%;
+      transition: width 1.4s ease;
+    }
+
+    .prog-hint {
+      font-size: 0.72rem;
+      color: var(--white-40);
+    }
+
+    .impact-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--lime-muted);
+      border: 1px solid var(--lime-border);
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      color: var(--lime);
+      margin-top: 16px;
+    }
+
+    .impact-pill .material-icons {
+      font-size: 1rem;
+    }
+
+    /* chef */
+    .chef-photo {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: var(--r-md);
+      margin-bottom: 14px;
+      filter: brightness(0.75) saturate(1.1);
+    }
+
+    .chef-tag-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 8px;
+    }
+
+    .chef-quote {
+      font-size: 0.88rem;
+      color: var(--white-70);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* MOBILE TAB BAR */
+    .tab-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(8, 15, 30, 0.7);
+      backdrop-filter: var(--glass-blur);
+      border-top: var(--glass-border);
+      padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+      z-index: 500;
+    }
+
+    .tab-bar-inner {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--white-40);
+      text-decoration: none;
+      font-size: 0.62rem;
+      font-weight: 500;
+      padding: 4px 14px;
+      transition: color 0.2s;
+    }
+
+    .tab-item.active,
+    .tab-item:hover {
+      color: var(--lime);
+    }
+
+    .tab-item .material-icons {
+      font-size: 1.25rem;
+    }
+
+    @media (max-width: 700px) {
+
+      .nav-links,
+      .nav-cta {
+        display: none;
+      }
+
+      .tab-bar {
+        display: block;
+      }
+
+      body {
+        padding-bottom: 68px;
+      }
+
+      .main {
+        padding: 24px 16px 100px;
+      }
+
+      .meals-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .meal-card {
+        min-height: auto;
+      }
+    }
+
+    @media (min-width: 701px) and (max-width: 900px) {
+      .meals-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="nav">
-  <a href="index.html" class="nav-logo">
-    <span class="material-icons">eco</span>SmartFeed
-  </a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="dashboard-student.html" class="active">Dashboard</a></li>
-    <li><a href="dashboard-owner.html">Analytics</a></li>
-    <li><a href="#">Profile</a></li>
-  </ul>
-  <a href="dashboard-student.html" class="nav-cta">Get Started</a>
-</header>
+  <header class="nav">
+    <a href="index.html" class="nav-logo">
+      <span class="material-icons">eco</span>SmartFeed
+    </a>
+    <ul class="nav-links">
+      <li><a href="dashboard-student.html" class="active">Dashboard</a></li>
+      <li><a href="#" id="logoutNavBtn">Logout</a></li>
+    </ul>
+  </header>
 
-<div class="main">
-  <div class="glass-panel">
-    <div class="date-tag" id="dateTag"></div>
-    <div class="greeting">hello,Shrihari 👋 — What's your plan for today?</div>
+  <div class="main">
+    <div class="glass-panel">
+      <div class="date-tag" id="dateTag"></div>
+      <div class="greeting">Hello,Shrihari 👋 — What's your plan for today?</div>
 
-    <!-- WEEK STRIP -->
-    <div class="week-strip" id="weekStrip" style="margin-bottom: 0;"></div>
+      <!-- WEEK STRIP -->
+      <div class="week-strip" id="weekStrip" style="margin-bottom: 0;"></div>
+    </div>
+
+    <!-- MEALS -->
+    <div class="meals-heading">Today's Meals</div>
+    <div class="meals-grid">
+
+      <div class="meal-card" id="card-b">
+        <div class="meal-emoji">🍳</div>
+        <div class="meal-name">Breakfast</div>
+        <div class="meal-menu" id="menu-b"><div class="menu-label">Today's Menu</div><div class="menu-items">Loading...</div></div>
+        <div class="meal-btns">
+          <button class="mbtn mbtn-yes" data-meal="b" data-choice="yes">
+            <span class="material-icons">check_circle</span> I'll be there
+          </button>
+          <button class="mbtn mbtn-no" data-meal="b" data-choice="no">Skipping this one</button>
+        </div>
+        <div class="cutoff-tag" id="cutoff-b"><span class="material-icons">schedule</span>Mark by 8:00 AM today</div>
+      </div>
+
+      <div class="meal-card" id="card-l">
+        <div class="meal-emoji">🍲</div>
+        <div class="meal-name">Lunch</div>
+        <div class="meal-menu" id="menu-l"><div class="menu-label">Today's Menu</div><div class="menu-items">Loading...</div></div>
+        <div class="meal-btns">
+          <button class="mbtn mbtn-yes" data-meal="l" data-choice="yes">
+            <span class="material-icons">check_circle</span> I'll be there
+          </button>
+          <button class="mbtn mbtn-no" data-meal="l" data-choice="no">Skipping this one</button>
+        </div>
+        <div class="cutoff-tag" id="cutoff-l"><span class="material-icons">schedule</span>Mark by 12:00 PM today</div>
+      </div>
+
+      <div class="meal-card" id="card-d">
+        <div class="meal-emoji">🥗</div>
+        <div class="meal-name">Dinner</div>
+        <div class="meal-menu" id="menu-d"><div class="menu-label">Today's Menu</div><div class="menu-items">Loading...</div></div>
+        <div class="meal-btns">
+          <button class="mbtn mbtn-yes" data-meal="d" data-choice="yes">
+            <span class="material-icons">check_circle</span> I'll be there
+          </button>
+          <button class="mbtn mbtn-no" data-meal="d" data-choice="no">Skipping this one</button>
+        </div>
+        <div class="cutoff-tag" id="cutoff-d"><span class="material-icons">schedule</span>Mark by 7:00 PM today</div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM CARDS -->
+    <div class="bottom-grid">
+      <div class="b-card">
+        <div class="b-card-title"><span class="material-icons">local_fire_department</span> My Streak</div>
+        <div class="streak-num" id="streakNum">—</div>
+        <div class="streak-days" id="streakLabel">Loading…</div>
+        <div class="impact-pill"><span class="material-icons">eco</span> Your meal data is helping reduce waste on
+          campus.</div>
+        <div style="margin-top:16px">
+          <div class="prog-track">
+            <div class="prog-fill" id="sfBar"></div>
+          </div>
+          <div class="prog-hint" id="streakHint">Calculating…</div>
+        </div>
+      </div>
+
+      <div class="b-card">
+        <div class="b-card-title"><span class="material-icons">restaurant</span> Chef's Update</div>
+        <img class="chef-photo" src="chef_3d_icon.png" style="filter:none; object-fit:contain; object-position:bottom;"
+          alt="Animated Chef Mascot" onerror="this.style.display='none'" />
+        <div class="chef-tag-label">Chef's Update</div>
+        <div class="chef-quote">"Thanks for the head's up, Knowing who's skipping helps us prep the right
+          amount. Every mark makes a difference."</div>
+      </div>
+    </div>
+
+    <!-- LEAVE MESS -->
+    <div class="leave-section">
+      <div class="leave-title">Danger Zone</div>
+      <div class="leave-desc">Leaving will remove you from this mess. You'll need a new mess code to rejoin.</div>
+      <button class="leave-btn" id="leaveMessBtn"><span class="material-icons">logout</span> Leave This Mess</button>
+    </div>
   </div>
 
-  <!-- MEALS -->
-  <div class="meals-heading">Today's Meals</div>
-  <div class="meals-grid">
-
-    <div class="meal-card" id="card-b">
-      <div class="meal-emoji">🍳</div>
-      <div class="meal-name">Breakfast</div>
-      <div class="meal-time">7:30 AM — Scrambled Eggs &amp; Toast</div>
-      <div class="meal-btns">
-        <button class="mbtn mbtn-yes" onclick="pick('b','yes')">
-          <span class="material-icons">check_circle</span> I'll be there
-        </button>
-        <button class="mbtn mbtn-no" onclick="pick('b','no')">Skipping this one</button>
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay" id="leaveModal">
+    <div class="modal-box">
+      <h3>⚠️ Leave Mess?</h3>
+      <p>Are you sure you want to leave? All your attendance history will be deleted and you'll need a new mess code to rejoin.</p>
+      <div class="modal-actions">
+        <button class="modal-cancel" id="leaveCancelBtn">Cancel</button>
+        <button class="modal-confirm" id="leaveConfirmBtn">Yes, Leave</button>
       </div>
-      <div class="cutoff-tag"><span class="material-icons">schedule</span>Mark by 9:00 PM tonight · Finalizing soon</div>
     </div>
-
-    <div class="meal-card" id="card-l">
-      <div class="meal-emoji">🍲</div>
-      <div class="meal-name">Lunch</div>
-      <div class="meal-time">1:00 PM — Vegetable Biryani</div>
-      <div class="meal-btns">
-        <button class="mbtn mbtn-yes" onclick="pick('l','yes')">
-          <span class="material-icons">check_circle</span> I'll be there
-        </button>
-        <button class="mbtn mbtn-no" onclick="pick('l','no')">Skipping this one</button>
-      </div>
-      <div class="cutoff-tag"><span class="material-icons">schedule</span>Mark by 9:00 PM tonight · Finalizing soon</div>
-    </div>
-
-    <div class="meal-card" id="card-d">
-      <div class="meal-emoji">🥗</div>
-      <div class="meal-name">Dinner</div>
-      <div class="meal-time">8:00 PM — Grilled Chicken &amp; Salad</div>
-      <div class="meal-btns">
-        <button class="mbtn mbtn-yes" onclick="pick('d','yes')">
-          <span class="material-icons">check_circle</span> I'll be there
-        </button>
-        <button class="mbtn mbtn-no" onclick="pick('d','no')">Skipping this one</button>
-      </div>
-      <div class="cutoff-tag"><span class="material-icons">schedule</span>Mark by 9:00 PM tonight · Finalizing soon</div>
-    </div>
-
   </div>
 
-  <!-- BOTTOM CARDS -->
-  <div class="bottom-grid">
-    <div class="b-card">
-      <div class="b-card-title"><span class="material-icons">local_fire_department</span> My Streak</div>
-      <div class="streak-num">12</div>
-      <div class="streak-days">Days</div>
-      <div class="impact-pill"><span class="material-icons">eco</span> Your meal data is helping reduce waste on campus.</div>
-      <div style="margin-top:16px">
-        <div class="prog-track"><div class="prog-fill" id="sfBar"></div></div>
-        <div class="prog-hint">3 more days to reach Platinum level</div>
-      </div>
+  <!-- TAB BAR -->
+  <nav class="tab-bar">
+    <div class="tab-bar-inner">
+      <a href="dashboard-student.html" class="tab-item active"><span
+          class="material-icons">dashboard</span>Dashboard</a>
+      <a href="#" class="tab-item" id="logoutTabBtn"><span class="material-icons">logout</span>Logout</a>
     </div>
+  </nav>
 
-    <div class="b-card">
-      <div class="b-card-title"><span class="material-icons">restaurant</span> Chef's Update</div>
-      <img class="chef-photo"
-        src="chef_3d_icon.png" style="filter:none; object-fit:contain; object-position:bottom;"
-        alt="Animated Chef Mascot" onerror="this.style.display='none'"/>
-      <div class="chef-tag-label">Chef's Update</div>
-      <div class="chef-quote">"Thanks for the head's up, Shrihari! Knowing who's skipping helps us prep the right amount. Every mark makes a difference."</div>
-    </div>
-  </div>
-</div>
+  <script type="module">
+    import { supabase, requireAuth, logout } from './common.js'
 
-<!-- TAB BAR -->
-<nav class="tab-bar">
-  <div class="tab-bar-inner">
-    <a href="index.html" class="tab-item"><span class="material-icons">home</span>Home</a>
-    <a href="dashboard-student.html" class="tab-item active"><span class="material-icons">dashboard</span>Dashboard</a>
-    <a href="dashboard-owner.html" class="tab-item"><span class="material-icons">analytics</span>Analytics</a>
-    <a href="#" class="tab-item"><span class="material-icons">person</span>Profile</a>
-  </div>
-</nav>
+    // 1. Auth Guard - Kick out if not logged in or not a student
+    const authData = await requireAuth('student');
+    if (!authData) {
+      // If requireAuth returns null, it's already redirecting, just halt execution here.
+      throw new Error("Authentication required");
+    }
 
-<script>
-// Date
-const now = new Date();
-document.getElementById('dateTag').textContent = now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+    const { user, profile } = authData;
 
-// Week strip
-const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-const strip=document.getElementById('weekStrip');
-for(let i=-3;i<=3;i++){
-  const d=new Date(now); d.setDate(d.getDate()+i);
-  const el=document.createElement('div');
-  el.className='week-day'+(i===0?' today':'');
-  el.innerHTML=`<span class="wd-name">${days[d.getDay()]}</span><span class="wd-num">${d.getDate()}</span><div class="wd-dot"></div>`;
-  strip.appendChild(el);
-}
+    // Update greeting dynamically (optional)
+    const greetingEl = document.querySelector('.greeting');
+    if (greetingEl) {
+      greetingEl.innerHTML = `Hello, ${profile.name}👋 — What's your plan for today?`;
+    }
 
-// Meal toggle
-const state={b:null,l:null,d:null};
-function pick(id,choice){
-  state[id]=choice;
-  const card=document.getElementById('card-'+id);
-  const yes=card.querySelectorAll('.mbtn')[0];
-  const no=card.querySelectorAll('.mbtn')[1];
-  yes.classList.toggle('chosen',choice==='yes');
-  no.classList.toggle('chosen',choice==='no');
-  if(choice==='yes'){no.textContent='Skipping this one'; no.classList.remove('chosen');}
-  if(choice==='no'){yes.innerHTML='<span class="material-icons">check_circle</span> I\'ll be there'; yes.classList.remove('chosen');}
-}
+    // Date
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    document.getElementById('dateTag').textContent = now.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase();
 
-// Streak bar
-setTimeout(()=>{ document.getElementById('sfBar').style.width='80%'; }, 400);
-</script>
+    // Week strip
+    const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const strip = document.getElementById('weekStrip');
+    for (let i = -3; i <= 3; i++) {
+      const d = new Date(now); d.setDate(d.getDate() + i);
+      const el = document.createElement('div');
+      el.className = 'week-day' + (i === 0 ? ' today' : '');
+      el.innerHTML = `<span class="wd-name">${days[d.getDay()]}</span><span class="wd-num">${d.getDate()}</span><div class="wd-dot"></div>`;
+      strip.appendChild(el);
+    }
+
+    // ── CUTOFF SYSTEM ──
+    // Cutoff hours for each meal (24h format)
+    const CUTOFFS = { b: 8, l: 12, d: 19 }; // 8 AM, 12 PM, 7 PM
+    const MEAL_LABELS = { b: 'Breakfast', l: 'Lunch', d: 'Dinner' };
+    const CUTOFF_DISPLAY = { b: '8:00 AM', l: '12:00 PM', d: '7:00 PM' };
+
+    function isMealLocked(mealId) {
+      const cutoffHour = CUTOFFS[mealId];
+      return now.getHours() >= cutoffHour;
+    }
+
+    function getMinutesUntilCutoff(mealId) {
+      const cutoffHour = CUTOFFS[mealId];
+      const cutoffTime = new Date(now);
+      cutoffTime.setHours(cutoffHour, 0, 0, 0);
+      return Math.floor((cutoffTime - new Date()) / 60000);
+    }
+
+    // ── NOTIFICATION TOAST (in-app) ──
+    let toastEl = document.createElement('div');
+    toastEl.className = 'notif-toast';
+    toastEl.innerHTML = '<span class="material-icons">notifications_active</span><span class="notif-text"></span>';
+    document.body.appendChild(toastEl);
+
+    function showToast(msg, durationMs = 5000) {
+      toastEl.querySelector('.notif-text').textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(() => toastEl.classList.remove('show'), durationMs);
+    }
+
+    // ── BROWSER NOTIFICATIONS ──
+    async function requestNotifPermission() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        await Notification.requestPermission();
+      }
+    }
+    requestNotifPermission();
+
+    function sendBrowserNotif(title, body) {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification(title, { body, icon: '🍽️' });
+      }
+    }
+
+    // Meal state
+    const state = { b: null, l: null, d: null };
+
+    // ── VISUAL UPDATE HELPER ──
+    function applyChoiceUI(id, choice) {
+      const card = document.getElementById('card-' + id);
+      const yes = card.querySelectorAll('.mbtn')[0];
+      const no = card.querySelectorAll('.mbtn')[1];
+      yes.classList.toggle('chosen', choice === 'yes');
+      no.classList.toggle('chosen', choice === 'no');
+      if (choice === 'yes') {
+        no.textContent = 'Skipping this one';
+        no.classList.remove('chosen');
+      }
+      if (choice === 'no') {
+        yes.innerHTML = '<span class="material-icons">check_circle</span> I\'ll be there';
+        yes.classList.remove('chosen');
+      }
+    }
+
+    // ── LOCK A MEAL CARD (past cutoff) ──
+    function lockMealCard(id, reason) {
+      const card = document.getElementById('card-' + id);
+      card.classList.add('locked');
+      card.querySelectorAll('.mbtn').forEach(b => b.disabled = true);
+      const cutoffTag = document.getElementById('cutoff-' + id);
+      cutoffTag.innerHTML = `<span class="material-icons">lock</span>${reason}`;
+      cutoffTag.classList.add('expired');
+    }
+
+    // ── PICK / VOTE ──
+    async function pick(id, choice) {
+      // Block if locked
+      if (isMealLocked(id)) return;
+      state[id] = choice;
+      applyChoiceUI(id, choice);
+
+      // Save to Supabase
+      try {
+        const { error } = await supabase
+          .from('meal_attendance')
+          .upsert({
+            student_id: user.id,
+            mess_id: profile.mess_id,
+            meal_type: id,
+            meal_date: todayStr,
+            status: choice,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'student_id,meal_type,meal_date' });
+        if (error) {
+          console.error('Error saving vote:', error);
+          alert('Failed to save. Please try again.');
+        }
+      } catch (e) {
+        console.error('Network error:', e);
+      }
+    }
+
+    // ── LOAD EXISTING ATTENDANCE FOR TODAY ──
+    async function loadTodayAttendance() {
+      try {
+        const { data, error } = await supabase
+          .from('meal_attendance')
+          .select('meal_type, status')
+          .eq('student_id', user.id)
+          .eq('meal_date', todayStr);
+        if (error) throw error;
+        if (data) {
+          data.forEach(r => {
+            state[r.meal_type] = r.status;
+            applyChoiceUI(r.meal_type, r.status);
+          });
+        }
+      } catch (e) {
+        console.error('Error loading today attendance:', e);
+      }
+    }
+
+    // ── AUTO-DEFAULT "NO" + LOCK PAST-CUTOFF MEALS ──
+    async function enforceCutoffs() {
+      for (const id of ['b', 'l', 'd']) {
+        if (isMealLocked(id)) {
+          // If student never marked → auto-submit "no"
+          if (state[id] === null) {
+            state[id] = 'no';
+            applyChoiceUI(id, 'no');
+            // Save default "no" to Supabase silently
+            try {
+              await supabase.from('meal_attendance').upsert({
+                student_id: user.id,
+                mess_id: profile.mess_id,
+                meal_type: id,
+                meal_date: todayStr,
+                status: 'no',
+                updated_at: new Date().toISOString()
+              }, { onConflict: 'student_id,meal_type,meal_date' });
+            } catch (e) { /* silent */ }
+            lockMealCard(id, `Cutoff passed · Defaulted to "Not coming"`);
+          } else {
+            const label = state[id] === 'yes' ? 'Attending' : 'Not coming';
+            lockMealCard(id, `Cutoff passed · Locked as "${label}"`);
+          }
+        }
+      }
+    }
+
+    // ── LIVE COUNTDOWN TIMER ──
+    function updateCutoffTimers() {
+      for (const id of ['b', 'l', 'd']) {
+        if (isMealLocked(id)) continue; // already locked, skip
+        const mins = getMinutesUntilCutoff(id);
+        const cutoffTag = document.getElementById('cutoff-' + id);
+        if (mins <= 0) {
+          // Just crossed cutoff during this session
+          enforceCutoffs();
+          return;
+        } else if (mins <= 30) {
+          const h = Math.floor(mins / 60);
+          const m = mins % 60;
+          cutoffTag.innerHTML = `<span class="material-icons">warning</span>⏰ ${m} min left to mark ${MEAL_LABELS[id]}!`;
+          cutoffTag.classList.add('urgent');
+        } else if (mins <= 60) {
+          cutoffTag.innerHTML = `<span class="material-icons">schedule</span>Mark by ${CUTOFF_DISPLAY[id]} · ${mins} min left`;
+          cutoffTag.classList.add('urgent');
+        } else {
+          cutoffTag.innerHTML = `<span class="material-icons">schedule</span>Mark by ${CUTOFF_DISPLAY[id]} today`;
+        }
+      }
+    }
+
+    // ── SEND REMINDERS for approaching cutoffs ──
+    function checkReminders() {
+      for (const id of ['b', 'l', 'd']) {
+        if (isMealLocked(id)) continue;
+        if (state[id] !== null) continue; // already marked
+        const mins = getMinutesUntilCutoff(id);
+        if (mins > 0 && mins <= 30) {
+          showToast(`⏰ ${MEAL_LABELS[id]} cutoff in ${mins} min! Mark now or it defaults to "Not coming".`);
+          sendBrowserNotif('SmartFeed Reminder', `${MEAL_LABELS[id]} cutoff in ${mins} min! Mark your attendance now.`);
+        }
+      }
+    }
+
+    // ── INIT SEQUENCE ──
+    await loadTodayAttendance();
+    await enforceCutoffs();
+    updateCutoffTimers();
+    checkReminders();
+    // Update timers every 60 seconds
+    setInterval(() => { updateCutoffTimers(); checkReminders(); }, 60000);
+
+    // Bind all meal buttons
+    document.querySelectorAll('.mbtn[data-meal]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mealId = btn.dataset.meal;
+        if (isMealLocked(mealId)) {
+          showToast(`⛔ ${MEAL_LABELS[mealId]} cutoff has passed. You can't change this anymore.`);
+          return;
+        }
+        pick(mealId, btn.dataset.choice);
+      });
+    });
+
+    // Wire up logout buttons
+    ['logoutNavBtn', 'logoutTabBtn'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          logout();
+        });
+      }
+    });
+
+    // ── REAL STREAK from meal_attendance ──
+    async function loadStreak() {
+      const streakNumEl = document.getElementById('streakNum');
+      const streakLabel = document.getElementById('streakLabel');
+      const streakHint = document.getElementById('streakHint');
+      const sfBar = document.getElementById('sfBar');
+
+      try {
+        // Fetch all 'yes' votes for this student, ordered newest-first
+        const { data, error } = await supabase
+          .from('meal_attendance')
+          .select('meal_date')
+          .eq('student_id', user.id)
+          .eq('status', 'yes')
+          .order('meal_date', { ascending: false });
+
+        if (error) throw error;
+
+        // Build a Set of unique dates where student attended at least one meal
+        const attendedDates = new Set(data.map(r => r.meal_date));
+
+        // Walk backwards from today counting consecutive days
+        let streak = 0;
+        const check = new Date(now);
+        // Format helper: YYYY-MM-DD
+        const fmt = d => d.toISOString().split('T')[0];
+
+        while (true) {
+          if (attendedDates.has(fmt(check))) {
+            streak++;
+            check.setDate(check.getDate() - 1);
+          } else {
+            break;
+          }
+        }
+
+        // Tier logic
+        const tiers = [
+          { name: 'Newbie', min: 0, max: 0 },
+          { name: 'Bronze', min: 1, max: 5 },
+          { name: 'Silver', min: 6, max: 10 },
+          { name: 'Gold', min: 11, max: 15 },
+          { name: 'Platinum', min: 16, max: Infinity }
+        ];
+        const currentTier = tiers.slice().reverse().find(t => streak >= t.min);
+        const nextTier = tiers[tiers.indexOf(currentTier) + 1];
+
+        // Progress bar %
+        let pct = 0;
+        let hintText = '';
+        if (!nextTier) {
+          // Already Platinum
+          pct = 100;
+          hintText = `🎉 You've reached Platinum — legendary!`;
+        } else {
+          const range = nextTier.min - currentTier.min;
+          const progress = streak - currentTier.min;
+          pct = Math.min(100, Math.round((progress / range) * 100));
+          const remaining = nextTier.min - streak;
+          hintText = `${remaining} more day${remaining === 1 ? '' : 's'} to reach ${nextTier.name} level`;
+        }
+
+        // Update UI
+        streakNumEl.textContent = streak;
+        streakLabel.textContent = streak === 1 ? 'Day' : 'Days';
+        streakHint.textContent = hintText;
+        setTimeout(() => { sfBar.style.width = pct + '%'; }, 300);
+
+      } catch (e) {
+        console.error('Streak calc error:', e);
+        streakNumEl.textContent = '0';
+        streakLabel.textContent = 'Days';
+        streakHint.textContent = 'Start marking meals to build your streak!';
+      }
+    }
+
+    loadStreak();
+
+    // ── LOAD TODAY'S MENU from daily_menus table ──
+    async function loadMenus() {
+      try {
+        const { data, error } = await supabase
+          .from('daily_menus')
+          .select('meal_type, menu_text')
+          .eq('mess_id', profile.mess_id)
+          .eq('meal_date', todayStr);
+        if (error) throw error;
+        const defaults = { b: 'Menu not set yet', l: 'Menu not set yet', d: 'Menu not set yet' };
+        if (data) {
+          data.forEach(r => { defaults[r.meal_type] = r.menu_text || 'Menu not set yet'; });
+        }
+        ['b', 'l', 'd'].forEach(id => {
+          const el = document.querySelector(`#menu-${id} .menu-items`);
+          if (el) el.textContent = defaults[id];
+        });
+      } catch(e) {
+        console.error('Menu load error:', e);
+        ['b', 'l', 'd'].forEach(id => {
+          const el = document.querySelector(`#menu-${id} .menu-items`);
+          if (el) el.textContent = 'Menu not available';
+        });
+      }
+    }
+    loadMenus();
+
+    // ── LEAVE MESS ──
+    const leaveModal = document.getElementById('leaveModal');
+    document.getElementById('leaveMessBtn').addEventListener('click', () => {
+      leaveModal.classList.add('open');
+    });
+    document.getElementById('leaveCancelBtn').addEventListener('click', () => {
+      leaveModal.classList.remove('open');
+    });
+    // Close modal on overlay click
+    leaveModal.addEventListener('click', (e) => {
+      if (e.target === leaveModal) leaveModal.classList.remove('open');
+    });
+    document.getElementById('leaveConfirmBtn').addEventListener('click', async () => {
+      const confirmBtn = document.getElementById('leaveConfirmBtn');
+      confirmBtn.textContent = 'Leaving...';
+      confirmBtn.disabled = true;
+      try {
+        // Delete profile (CASCADE deletes attendance records)
+        const { error } = await supabase
+          .from('profiles')
+          .delete()
+          .eq('id', user.id);
+        if (error) throw error;
+        // Sign out
+        await supabase.auth.signOut();
+        window.location.href = 'index.html';
+      } catch(e) {
+        console.error('Leave mess error:', e);
+        alert('Failed to leave mess. Please try again.');
+        confirmBtn.textContent = 'Yes, Leave';
+        confirmBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
+
 </html>

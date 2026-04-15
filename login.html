@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartFeed | Log In</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Display:wght@400;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* ── TOKENS (Glassmorphism Deep Theme - Enhanced) ── */
+    :root {
+      --bg-primary: #022c22;
+      --bg-card: rgba(255, 255, 255, 0.08);
+      --lime: #4ade80;
+      --lime-hover: #86efac;
+      --white: #ffffff;
+      --white-70: rgba(255, 255, 255, 0.85);
+      --radius-md: 18px;
+      --radius-xl: 32px;
+      --glass-blur: blur(24px);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+      --glass-border-t: 1px solid rgba(255, 255, 255, 0.35);
+      --glass-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      --font-display: 'Google Sans Display', 'Roboto', sans-serif;
+      --font-body: 'Google Sans', 'Roboto', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-primary);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(5, 150, 105, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(132, 204, 22, 0.2) 0%, transparent 60%);
+      background-size: 150% 150%;
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: var(--glass-border);
+      border-top: var(--glass-border-t);
+      box-shadow: var(--glass-shadow);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+    }
+
+    .logo-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .logo-header .material-icons {
+      color: var(--lime);
+      font-size: 2.2rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--white-70);
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--white-70);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: var(--font-body);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--lime);
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      margin-top: 10px;
+      background: var(--lime);
+      color: #0d1f12;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .submit-btn:hover {
+      background: var(--lime-hover);
+    }
+
+    .bottom-link {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--white-70);
+    }
+
+    .bottom-link a {
+      color: var(--lime);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .bottom-link a:hover {
+      text-decoration: underline;
+    }
+
+    #errorMsg {
+      color: #ff5252;
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 12px;
+      font-weight: 500;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="auth-card">
+    <div class="logo-header"><span class="material-icons">eco</span>SmartFeed</div>
+    <div class="subtitle">Welcome back.</div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="email" placeholder="john@college.edu" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Log In</button>
+      <div id="errorMsg"></div>
+    </form>
+
+    <div class="bottom-link">
+      Don't have an account? <a href="signup.html">Sign up</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase, getCurrentProfile } from './common.js'
+
+    // Fast path: if already logged in, redirect
+    getCurrentProfile().then(data => {
+      if (data) {
+        if (data.profile.role === 'student') window.location.href = 'dashboard-student.html';
+        if (data.profile.role === 'owner') window.location.href = 'dashboard-owner.html';
+      }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const errorMsg = document.getElementById('errorMsg');
+      btn.textContent = "Logging In...";
+      btn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (authError) throw authError;
+
+        // Fetch profile to know role
+        const profileData = await getCurrentProfile();
+        if (!profileData) throw new Error("Could not load user profile.");
+
+        if (profileData.profile.role === 'student') window.location.href = 'dashboard-student.html';
+        if (profileData.profile.role === 'owner') window.location.href = 'dashboard-owner.html';
+
+      } catch (err) {
+        errorMsg.textContent = err.message || "Invalid login credentials.";
+        errorMsg.style.display = 'block';
+        btn.textContent = "Log In";
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+
+</html>
